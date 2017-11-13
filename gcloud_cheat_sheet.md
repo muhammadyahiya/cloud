@@ -44,8 +44,19 @@ gcloud container builds submit . --config=cloudbuild.yaml
 ```
 gcloud config list
 gcloud config set compute/zone us-west1-a
-gcloud config set account `account`
+gcloud config set account "account_email"
 alias demo='gcloud config set account pythonrocksk8s201702@gmail.com && gcloud config set project salt-163215 && gcloud config set compute/region us-west1 && gcloud config set compute/zone us-west1-a'
+
+```
+### project zone cluster
+```
+project_id=$(gcloud config get-value project)
+project_id=$(gcloud config list project --format='value(core.project)')
+
+cluster=$(gcloud config get-value container/cluster 2> /dev/null)
+zone=$(gcloud config get-value compute/zone 2> /dev/null)
+project=$(gcloud config get-value core/project 2> /dev/null)
+
 ```
 
 ## find an instance 
@@ -60,11 +71,6 @@ gcloud compute config-ssh
 # billing
 ```
 gcloud alpha billing accounts projects link <project_id> --account-id <account_id>
-```
-## project 
-```
-project_id=$(gcloud config get-value project)
-project_id=$(gcloud config list project --format='value(core.project)')
 ```
 
 ## address
