@@ -98,3 +98,7 @@ gcloud compute forwarding-rules describe my-http-forwardingrule --global
 gcloud  compute instances list --log-http
 ```
 
+## metadata
+```
+curl "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=true&alt=text" -H "Metadata-Flavor: Google"
+```
