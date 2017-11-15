@@ -19,27 +19,6 @@ gcloud auth login
 gcloud info
 
 ```
-
-## cloudbuilder 
-```
-curl -X POST -T cloudbuild.json -H "Content-Type: application/json" -H "Authorization: Bearer $(gcloud auth print-access-token)" https://cloudbuild.googleapis.com/v1/projects/$PROJECT_ID/builds
-
-
-And the cloudbuild.json:
-{
-  "steps": [
-    {
-      "name": "busybox",
-      "args": [ "sleep", "1" ]
-    }
-  ]
-}
-```
-```
-container-builder-local --config=cloudbuild.yaml -dryrun=false .
-gcloud container builds submit . --config=cloudbuild.yaml
-```
-
 ## switch gcloud context with gcloud config
 ```
 gcloud config list
