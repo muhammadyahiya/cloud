@@ -76,6 +76,12 @@ gcloud compute forwarding-rules describe my-http-forwardingrule --global
 ```
 gcloud  compute instances list --log-http
 ```
+## iam
+```
+gcloud projects get-iam-policy <project_id>
+gcloud iam service-accounts list
+gcloud iam service-accounts get-iam-policy <sa_email>
+```
 
 ## metadata
 ```
