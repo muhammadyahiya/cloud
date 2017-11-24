@@ -29,7 +29,7 @@ alias demo='gcloud config set account pythonrocksk8s201702@gmail.com && gcloud c
 ```
 ### project zone cluster
 ```
-project_id=$(gcloud config get-value project)
+project_id=$(gcloud config get-value core/project)
 project_id=$(gcloud config list project --format='value(core.project)')
 
 cluster=$(gcloud config get-value container/cluster 2> /dev/null)
