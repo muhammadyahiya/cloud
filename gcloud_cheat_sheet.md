@@ -42,6 +42,7 @@ project=$(gcloud config get-value core/project 2> /dev/null)
 ```
 gcloud compute instances list --project=dev --filter="name~^es"
 gcloud compute instances list --project=dev --filter=name:kafka --format="value(name,INTERNAL_IP)"
+gcloud compute instances list --filter=tags:kafka-node
 ```
 # generate ssh config 
 ```
