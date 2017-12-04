@@ -48,6 +48,15 @@ gcloud compute instances list --filter=tags:kafka-node
 ```
 gcloud compute config-ssh
 ```
+
+# kms
+```
+# list all keyrings 
+gcloud kms keyrings list --location global
+# list all keys in my_key_ring
+gcloud kms keys list --keyring my_key_ring --location global
+```
+
 # billing
 ```
 gcloud alpha billing accounts projects link <project_id> --account-id <account_id>
