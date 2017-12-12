@@ -81,6 +81,8 @@ gcloud compute forwarding-rules describe my-forwardingrule --region us-central1
 ```
 gcloud compute forwarding-rules describe my-http-forwardingrule --global
 ```
+## move instance
+`gcloud compute instances move <instance_wanna_move> --destination-zone=us-central1-a --zone=us-central1-c`
 
 ## debugging
 ```
@@ -110,6 +112,3 @@ gcloud config set container/use_application_default_credentials true
 export CLOUDSDK_CONTAINER_USE_APPLICATION_DEFAULT_CREDENTIALS=true
 export GOOGLE_APPLICATION_CREDENTIALS=$HOME/.config/salt-87381ff.json
 ```
-
-## move instance
-`gcloud compute instances move <instance_wanna_move> --destination-zone=us-central1-a --zone=us-central1-c`
