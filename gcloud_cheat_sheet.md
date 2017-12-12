@@ -110,3 +110,6 @@ gcloud config set container/use_application_default_credentials true
 export CLOUDSDK_CONTAINER_USE_APPLICATION_DEFAULT_CREDENTIALS=true
 export GOOGLE_APPLICATION_CREDENTIALS=$HOME/.config/salt-87381ff.json
 ```
+
+## move instance
+`gcloud compute instances move <instance_wanna_move> --destination-zone=us-central1-a --zone=us-central1-c`
