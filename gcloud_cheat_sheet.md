@@ -66,6 +66,10 @@ gcloud alpha billing accounts projects link <project_id> --account-id <account_i
 ```
 gcloud compute addresses describe https-lb --global --format json
 ```
+## disk snapshot
+`gcloud compute disks snapshot kafka-data1-1 --async --snapshot-names=kafka-data-1 --project project_a --zone us-west1-a
+Use [gcloud compute operations describe URI] command to check the status of the operation(s).
+`
 
 ## find the forwrading-rules given the dns
 ```
