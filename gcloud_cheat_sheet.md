@@ -22,6 +22,7 @@ gcloud info
 ## switch gcloud context with gcloud config
 ```
 gcloud config list
+gcloud config configurations list
 gcloud config set account pythonrocksk8s201702@gmail.com 
 gcloud config set project salt-163215
 gcloud config set compute/region us-west1
