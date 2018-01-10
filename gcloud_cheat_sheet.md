@@ -29,9 +29,6 @@ gcloud config set compute/region us-west1
 gcloud config set compute/zone us-west1-a
 alias demo='gcloud config set account pythonrocksk8s201702@gmail.com && gcloud config set project salt-163215 && gcloud config set compute/region us-west1 && gcloud config set compute/zone us-west1-a'
 
-```
-### project zone cluster
-```
 project_id=$(gcloud config get-value core/project)
 project_id=$(gcloud config list project --format='value(core.project)')
 
