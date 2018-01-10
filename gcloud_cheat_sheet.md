@@ -99,9 +99,14 @@ gcloud iam service-accounts list
 gcloud iam service-accounts get-iam-policy <sa_email>
 ```
 
-## metadata
+## instance level metadata
 ```
 curl "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=true&alt=text" -H "Metadata-Flavor: Google"
+```
+
+## project level metadata
+```
+gcloud compute project-info describe
 ```
 
 ## set up application-default
