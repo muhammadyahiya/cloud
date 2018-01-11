@@ -1,6 +1,7 @@
 * [format](https://cloudplatform.googleblog.com/2016/06/filtering-and-formatting-fun-with.html)
-* [projection](https://cloud.google.com/sdk/gcloud/reference/topic/projections)
+* [projections](https://cloud.google.com/sdk/gcloud/reference/topic/projections)
 * [filters](https://cloud.google.com/sdk/gcloud/reference/topic/filters)
+* [resource-keys](https://cloud.google.com/sdk/gcloud/reference/topic/resource-keys)
 * https://cloud.google.com/sdk/docs/scripting-gcloud
 
 ## auth
