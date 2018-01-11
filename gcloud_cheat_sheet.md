@@ -1,5 +1,5 @@
 * [format](https://cloudplatform.googleblog.com/2016/06/filtering-and-formatting-fun-with.html)
-* [projects](https://cloud.google.com/sdk/gcloud/reference/topic/projections)
+* [projection](https://cloud.google.com/sdk/gcloud/reference/topic/projections)
 * [filters](https://cloud.google.com/sdk/gcloud/reference/topic/filters)
 * https://cloud.google.com/sdk/docs/scripting-gcloud
 
