@@ -40,7 +40,7 @@ project=$(gcloud config get-value core/project 2> /dev/null)
 gcloud compute images list --filter=name:debian --uri
 https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-8-jessie-v20180109
 https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20180105
-``
+```
 
 
 ## find an instance 
