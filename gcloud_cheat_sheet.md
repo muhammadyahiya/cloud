@@ -35,6 +35,13 @@ zone=$(gcloud config get-value compute/zone 2> /dev/null)
 project=$(gcloud config get-value core/project 2> /dev/null)
 
 ```
+## image
+```
+gcloud compute images list --filter=name:debian --uri
+https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-8-jessie-v20180109
+https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20180105
+``
+
 
 ## find an instance 
 * [filters](https://cloud.google.com/sdk/gcloud/reference/topic/filters)
