@@ -112,16 +112,3 @@ curl "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=tru
 ```
 gcloud compute project-info describe
 ```
-
-## set up application-default
-https://developers.google.com/identity/protocols/application-default-credentials set up gcloud auth application-default login
-
-https://cloud.google.com/sdk/docs/release-notes#15000_2017-04-05
-
-gcloud container clusters create|get-credentials will now configure kubectl to use the credentials of the active gcloud account by default, instead of using application default credentials. This requires kubectl 1.6.0 or higher. You can update kubectl by running 
-gcloud components update kubectl. If you prefer to use application default credentials to authenticate kubectl to Google Container Engine clusters, you can revert to the previous behavior by setting the container/use_application_default_credentials property:
-gcloud config set container/use_application_default_credentials true
-```
-export CLOUDSDK_CONTAINER_USE_APPLICATION_DEFAULT_CREDENTIALS=true
-export GOOGLE_APPLICATION_CREDENTIALS=$HOME/.config/salt-87381ff.json
-```
