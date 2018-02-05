@@ -105,6 +105,7 @@ gcloud  compute instances list --log-http
 ```
 ## iam
 ```
+gcloud iam service-accounts keys list --iam-account=vault-admin@<project_id>.iam.gserviceaccount.com
 gcloud projects get-iam-policy <project_id>
 gcloud iam service-accounts list
 gcloud iam service-accounts get-iam-policy <sa_email>
