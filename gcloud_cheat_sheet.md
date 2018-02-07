@@ -120,3 +120,7 @@ curl "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=tru
 ```
 gcloud compute project-info describe
 ```
+
+## GCR
+* https://gist.github.com/ahmetb/7ce6d741bd5baa194a3fac6b1fec8bb7
+* https://medium.com/google-cloud/gcr-io-tips-tricks-d80b3c67cb64
