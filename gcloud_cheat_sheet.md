@@ -56,6 +56,8 @@ gcloud compute instances list --filter='machineType:g1-small'
 
 gcloud compute instances list --filter=name:prod-es --format='value(NAME)' | xargs -I {} -p gcloud compute instances stop {}
 
+gcloud compute instances list --filter='name:prod-es*' --format='value(INTERNAL_IP)' | xargs -I {} ssh {} "sudo chef-client"
+
 ```
 # generate ssh config 
 ```
