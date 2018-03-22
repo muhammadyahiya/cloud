@@ -114,6 +114,9 @@ gcloud iam service-accounts keys list --iam-account=vault-admin@<project_id>.iam
 gcloud projects get-iam-policy <project_id>
 gcloud iam service-accounts list
 gcloud iam service-accounts get-iam-policy <sa_email>
+
+# add role to service account
+gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
 ```
 
 ## instance level metadata
