@@ -35,6 +35,9 @@ cluster=$(gcloud config get-value container/cluster 2> /dev/null)
 zone=$(gcloud config get-value compute/zone 2> /dev/null)
 project=$(gcloud config get-value core/project 2> /dev/null)
 
+# switch project based on the name
+gcloud config set project $(gcloud projects list --filter='name:wordpress-dev' --format='value(project_id)')
+
 ```
 ## image
 ```
