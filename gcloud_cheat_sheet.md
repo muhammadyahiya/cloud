@@ -74,6 +74,10 @@ gcloud compute forwarding-rules describe my-http-forwardingrule --global
 ## address
 ```
 gcloud compute addresses describe https-lb --global --format json
+
+# list all IP addresses
+gcloud projects list --format='value(project_id)' | xargs -I {} gcloud compute addresses list --format='value(address)' --project {}  2>/dev/null | sort | uniq -c
+
 ```
 ## compute engine image
 ```
