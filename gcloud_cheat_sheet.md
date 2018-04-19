@@ -42,13 +42,45 @@ gcloud config set project $(gcloud projects list --filter='name:wordpress-dev' -
 gcloud container clusters describe porch-development --zone $(gcloud config get-value compute/zone) --format='get(endpoint)'
 
 ```
-## image
+
+# kms
+```
+# list all keyrings 
+gcloud kms keyrings list --location global
+# list all keys in my_key_ring
+gcloud kms keys list --keyring my_key_ring --location global
+```
+
+# billing
+```
+gcloud alpha billing accounts projects link <project_id> --account-id <account_id>
+```
+
+## find the forwrading-rules given the dns
+```
+gcloud compute forwarding-rules list --filter=$(dig +short <dns_name>)
+```
+
+## describe a regional forwarding rule
+```
+gcloud compute forwarding-rules describe my-forwardingrule --region us-central1
+```
+
+## describe a global forwarding rule
+```
+gcloud compute forwarding-rules describe my-http-forwardingrule --global
+```
+
+## address
+```
+gcloud compute addresses describe https-lb --global --format json
+```
+## compute engine image
 ```
 gcloud compute images list --filter=name:debian --uri
 https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-8-jessie-v20180109
 https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20180105
 ```
-
 
 ## find an instance 
 * [filters](https://cloud.google.com/sdk/gcloud/reference/topic/filters)
@@ -70,42 +102,10 @@ gcloud compute instances list --filter='name:prod-es*' --format='value(INTERNAL_
 gcloud compute config-ssh
 ```
 
-# kms
-```
-# list all keyrings 
-gcloud kms keyrings list --location global
-# list all keys in my_key_ring
-gcloud kms keys list --keyring my_key_ring --location global
-```
-
-# billing
-```
-gcloud alpha billing accounts projects link <project_id> --account-id <account_id>
-```
-
-## address
-```
-gcloud compute addresses describe https-lb --global --format json
-```
 ## disk snapshot
 ```
 gcloud compute disks snapshot kafka-data1-1 --async --snapshot-names=kafka-data-1 --project project_a --zone us-west1-a
 Use [gcloud compute operations describe URI] command to check the status of the operation(s).
-```
-
-## find the forwrading-rules given the dns
-```
-gcloud compute forwarding-rules list --filter=$(dig +short <dns_name>)
-```
-
-## describe a regional forwarding rule
-```
-gcloud compute forwarding-rules describe my-forwardingrule --region us-central1
-```
-
-## describe a global forwarding rule
-```
-gcloud compute forwarding-rules describe my-http-forwardingrule --global
 ```
 ## move instance
 `gcloud compute instances move <instance_wanna_move> --destination-zone=us-central1-a --zone=us-central1-c`
@@ -138,3 +138,8 @@ gcloud compute project-info describe
 ## GCR
 * https://gist.github.com/ahmetb/7ce6d741bd5baa194a3fac6b1fec8bb7
 * https://medium.com/google-cloud/gcr-io-tips-tricks-d80b3c67cb64
+
+## StackDriver logging
+```
+gcloud logging read "timestamp >= \"2018-04-19T00:30:00Z\"  and logName=projects/${project_id}/logs/requests and resource.type=http_load_balancer" --format="csv(httpRequest.remoteIp,httpRequest.requestUrl,timestamp)" --project=${project_id}
+```
