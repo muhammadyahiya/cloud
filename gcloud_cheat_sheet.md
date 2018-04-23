@@ -125,6 +125,9 @@ gcloud projects get-iam-policy <project_id>
 gcloud iam service-accounts list
 gcloud iam service-accounts get-iam-policy <sa_email>
 
+# get the compute engine account 
+gcloud iam service-accounts list   --filter='email ~ [0-9]*-compute@.*'   --format='table(email)'
+
 # add role to service account
 gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
 ```
