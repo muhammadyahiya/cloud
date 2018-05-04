@@ -113,19 +113,11 @@ gcloud compute forwarding-rules list
 
 ```
 
+## forwarding-rules
 
-## find the forwrading-rules given the dns
 ```
 gcloud compute forwarding-rules list --filter=$(dig +short <dns_name>)
-```
-
-## describe a regional forwarding rule
-```
 gcloud compute forwarding-rules describe my-forwardingrule --region us-central1
-```
-
-## describe a global forwarding rule
-```
 gcloud compute forwarding-rules describe my-http-forwardingrule --global
 ```
 
@@ -135,7 +127,6 @@ gcloud compute addresses describe https-lb --global --format json
 
 # list all IP addresses
 gcloud projects list --format='value(project_id)' | xargs -I {} gcloud compute addresses list --format='value(address)' --project {}  2>/dev/null | sort | uniq -c
-
 ```
 ## compute engine image
 ```
@@ -144,7 +135,7 @@ https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian
 https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20180105
 ```
 
-## find an instance 
+## list an instance 
 * [filters](https://cloud.google.com/sdk/gcloud/reference/topic/filters)
 * [resource-keys](https://cloud.google.com/sdk/gcloud/reference/topic/resource-keys)
 
