@@ -71,7 +71,7 @@ gcloud compute instance-groups managed create nginx-group \
          --target-pool nginx-pool
 ```
 
-## firewall and layer 3 network lb
+## layer 3 network lb
 
 ```
 gcloud compute firewall-rules create www-firewall --allow tcp:80
