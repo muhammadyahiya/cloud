@@ -56,6 +56,39 @@ gcloud kms keys list --keyring my_key_ring --location global
 gcloud alpha billing accounts projects link <project_id> --account-id <account_id>
 ```
 
+## instances
+```
+cat << EOF > startup.sh
+#! /bin/bash
+apt-get update
+apt-get install -y nginx
+service nginx start
+sed -i -- 's/nginx/Google Cloud Platform - '"\$HOSTNAME"'/' /var/www/html/index.nginx-debian.html
+EOF
+gcloud compute instance-templates create nginx-template  --metadata-from-file startup-script=startup.sh
+gcloud compute target-pools create nginx-pool
+gcloud compute instance-templates create nginx-template \
+         --metadata-from-file startup-script=startup.sh
+gcloud compute instance-groups managed create nginx-group \
+         --base-instance-name nginx \
+         --size 2 \
+         --template nginx-template \
+         --target-pool nginx-pool
+```
+
+## firewall and layer 3 lb
+
+```
+gcloud compute firewall-rules create www-firewall --allow tcp:80
+gcloud compute forwarding-rules create nginx-lb \
+         --region us-central1 \
+         --ports=80 \
+         --target-pool nginx-pool
+         
+gcloud compute forwarding-rules list
+
+```
+
 ## find the forwrading-rules given the dns
 ```
 gcloud compute forwarding-rules list --filter=$(dig +short <dns_name>)
