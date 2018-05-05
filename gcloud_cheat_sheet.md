@@ -72,7 +72,6 @@ gcloud compute instance-groups managed create nginx-group \
 ```
 
 ## layer 3 network lb
-
 ```
 gcloud compute firewall-rules create www-firewall --allow tcp:80
 gcloud compute forwarding-rules create nginx-lb \
@@ -85,6 +84,8 @@ gcloud compute forwarding-rules list
 ```
 
 ## layer 7 http lb
+* https://cloud.google.com/solutions/scalable-and-resilient-apps
+
 ```
 gcloud compute http-health-checks create http-basic-check
 gcloud compute instance-groups managed \
