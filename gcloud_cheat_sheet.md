@@ -41,8 +41,11 @@ gcloud config set project $(gcloud projects list --filter='name:wordpress-dev' -
 gcloud container clusters describe porch-development --zone $(gcloud config get-value compute/zone) --format='get(endpoint)'
 
 ```
+## bash
+* https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-1-114924737
+* https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-2-4d049a656f1a
 
-# kms
+## kms
 ```
 # list all keyrings 
 gcloud kms keyrings list --location global
