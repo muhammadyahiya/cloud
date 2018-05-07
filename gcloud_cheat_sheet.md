@@ -159,10 +159,13 @@ gcloud compute instances list --filter='name:prod-es*' --format='value(INTERNAL_
 `gcloud compute instances move <instance_wanna_move> --destination-zone=us-central1-a --zone=us-central1-c`
 
 
-# generate ssh config 
+## generate ssh config 
 ```
 gcloud compute config-ssh
 ```
+
+## serial port debug
+* https://cloud.google.com/compute/docs/instances/interacting-with-serial-console
 
 ## disk snapshot
 ```
