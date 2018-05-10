@@ -52,6 +52,9 @@ gcloud container clusters describe porch-development --zone $(gcloud config get-
 
 ## service account
 ```
+# creaate jenkins sa
+gcloud iam service-accounts create jenkins --display-name jenkins
+
 export SA_EMAIL=$(gcloud iam service-accounts list \
     --filter="displayName:jenkins" --format='value(email)')
 export PROJECT=$(gcloud info --format='value(config.project)')
@@ -66,6 +69,9 @@ gcloud projects add-iam-policy-binding $PROJECT --role roles/compute.securityAdm
     --member serviceAccount:$SA_EMAIL
 gcloud projects add-iam-policy-binding $PROJECT --role roles/iam.serviceAccountActor \
     --member serviceAccount:$SA_EMAIL
+    
+# create service account key    
+gcloud iam service-accounts keys create jenkins-sa.json --iam-account $SA_EMAIL    
 ```
 
 ## bash
