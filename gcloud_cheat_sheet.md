@@ -74,6 +74,21 @@ gcloud projects add-iam-policy-binding $PROJECT --role roles/iam.serviceAccountA
 gcloud iam service-accounts keys create jenkins-sa.json --iam-account $SA_EMAIL    
 ```
 
+```
+gcloud iam service-accounts keys list --iam-account=vault-admin@<project_id>.iam.gserviceaccount.com
+gcloud projects get-iam-policy <project_id>
+gcloud iam service-accounts list
+gcloud iam service-accounts get-iam-policy <sa_email>
+
+# get the compute engine account 
+gcloud iam service-accounts list   --filter='email ~ [0-9]*-compute@.*'   --format='table(email)'
+
+# add role to service account
+gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
+```
+
+
+
 ## bash
 * https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-1-114924737
 * https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-2-4d049a656f1a
@@ -209,19 +224,6 @@ Use [gcloud compute operations describe URI] command to check the status of the 
 ## debugging
 ```
 gcloud  compute instances list --log-http
-```
-## iam
-```
-gcloud iam service-accounts keys list --iam-account=vault-admin@<project_id>.iam.gserviceaccount.com
-gcloud projects get-iam-policy <project_id>
-gcloud iam service-accounts list
-gcloud iam service-accounts get-iam-policy <sa_email>
-
-# get the compute engine account 
-gcloud iam service-accounts list   --filter='email ~ [0-9]*-compute@.*'   --format='table(email)'
-
-# add role to service account
-gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
 ```
 
 ## instance level metadata
