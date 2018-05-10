@@ -99,6 +99,32 @@ gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-15490
 gcloud kms keyrings list --location global
 # list all keys in my_key_ring
 gcloud kms keys list --keyring my_key_ring --location global
+
+# grant KMS IAM permission to a sv account $USER_EMAIL 
+gcloud kms keyrings add-iam-policy-binding $KEYRING_NAME \
+    --location global \
+    --member user:$USER_EMAIL \
+    --role roles/cloudkms.admin
+gcloud kms keyrings add-iam-policy-binding $KEYRING_NAME \
+    --location global \
+    --member user:$USER_EMAIL \
+    --role roles/cloudkms.admin
+    
+# Encrypt and Decrypt in REST API
+curl -v "https://cloudkms.googleapis.com/v1/projects/$DEVSHELL_PROJECT_ID/locations/global/keyRings/$KEYRING_NAME/cryptoKeys/$CRYPTOKEY_NAME:encrypt" \
+  -d "{\"plaintext\":\"$PLAINTEXT\"}" \
+  -H "Authorization:Bearer $(gcloud auth application-default print-access-token)"\
+  -H "Content-Type:application/json" \
+| jq .ciphertext -r > 1.encrypted
+
+curl -v "https://cloudkms.googleapis.com/v1/projects/$DEVSHELL_PROJECT_ID/locations/global/keyRings/$KEYRING_NAME/cryptoKeys/$CRYPTOKEY_NAME:decrypt" \
+  -d "{\"ciphertext\":\"$(cat 1.encrypted)\"}" \
+  -H "Authorization:Bearer $(gcloud auth application-default print-access-token)"\
+  -H "Content-Type:application/json" \
+| jq .plaintext -r | base64 -d
+
+
+    
 ```
 
 
