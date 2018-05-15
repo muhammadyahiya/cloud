@@ -121,12 +121,14 @@ curl -v "https://cloudkms.googleapis.com/v1/projects/$DEVSHELL_PROJECT_ID/locati
   -d "{\"ciphertext\":\"$(cat 1.encrypted)\"}" \
   -H "Authorization:Bearer $(gcloud auth application-default print-access-token)"\
   -H "Content-Type:application/json" \
-| jq .plaintext -r | base64 -d
-
-
-    
+| jq .plaintext -r | base64 -d    
 ```
 
+## want to get the gcloud command for creating an instance? 
+from web console
+```
+gcloud beta compute --project=victory-demo-dev instances create micro1 --zone=us-west1-a --machine-type=f1-micro --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=398028291895-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --min-cpu-platform=Automatic --image=debian-9-stretch-v20180510 --image-project=debian-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --boot-disk-device-name=micro1
+```
 
 ## instances, template, target-pool and instance group
 ```
