@@ -249,6 +249,12 @@ gcloud compute disks snapshot kafka-data1-1 --async --snapshot-names=kafka-data-
 Use [gcloud compute operations describe URI] command to check the status of the operation(s).
 ```
 
+## regional disk
+```
+ gcloud beta compute instance attach-disk micro1 --disk pd-west1 --disk-scope regional
+ gcloud beta compute instance detach-disk micro1 --disk pd-west1 --disk-scope regional
+```
+
 ## debugging
 ```
 gcloud  compute instances list --log-http
