@@ -312,6 +312,49 @@ curl "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=tru
 gcloud compute project-info describe
 ```
 
+## Cloud SQL
+```
+gcloud sql instances create $INSTANCE_NAME \
+--database-version POSTGRES_9_6 \
+--region "$INSTANCE_REGION" \
+--tier db-f1-micro \
+--storage-type HDD \
+--async > /dev/null
+
+echo "Cloud SQL instance creation started.."
+
+# Running a loop to wait for the Cloud SQL instance to become "RUNNABLE"
+for run in {1..60}
+do
+  echo "Waiting for instance to finish starting.."
+  gcloud sql instances describe $INSTANCE_NAME \
+  --format="default(state)" | grep RUNNABLE
+  rc=$?
+  if [[ rc -eq 0 ]]; then
+    break
+  fi
+  sleep 10
+done
+
+gcloud sql instances describe $INSTANCE_NAME \
+--format="default(state)" | grep RUNNABLE
+rc=$?
+if [[ rc -eq 1 ]]; then
+  echo "Instance creation failed or is taking unusually long"
+  exit 1
+elif [[ rc -eq 0 ]]; then
+  echo "Instance creation completed"
+fi
+
+
+# Making a Postgres user that is allowed to connect from any host
+gcloud sql users create $USER_NAME \
+'%' \
+--instance $INSTANCE_NAME \
+--password $USER_PASSWORD
+```
+
+
 ## GCR
 * https://gist.github.com/ahmetb/7ce6d741bd5baa194a3fac6b1fec8bb7
 * https://medium.com/google-cloud/gcr-io-tips-tricks-d80b3c67cb64
