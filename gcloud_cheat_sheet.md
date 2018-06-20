@@ -86,50 +86,6 @@ gcloud iam service-accounts list   --filter='email ~ [0-9]*-compute@.*'   --form
 gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
 ```
 
-```
-SA_NAME=$USER-sa
-NODE_SA_NAME=$USER-node-sa
-PROJECT=$(gcloud config get-value core/project)
-
-if [ -z "$PROJECT" ]; then
-  echo "No default project set. Please set one with gcloud config"
-  exit 1
-fi
-
-FULL_SA_NAME=$SA_NAME@$PROJECT.iam.gserviceaccount.com
-
-FULL_NODE_SA_NAME=$NODE_SA_NAME@$PROJECT.iam.gserviceaccount.com
-
-gcloud iam service-accounts create $SA_NAME --display-name $SA_NAME
-
-gcloud iam service-accounts create $NODE_SA_NAME --display-name $NODE_SA_NAME
-
-# This is the policy for the container that will communicate with Cloud SQL Proxy
-# The only permissions it needs is roles/cloudsql.client
-# Remember, least privilege
-gcloud projects add-iam-policy-binding $PROJECT \
---member serviceAccount:$FULL_SA_NAME \
---role roles/cloudsql.client > /dev/null
-
-# We are building a low privilege service account for the GKE nodes
-# The actual privileged SAs are built on a per-container basis
-# These three privileges are the minimum needed for a functioning node
-# per the GKE docs
-# https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_service_accounts_for_your_nodes
-gcloud projects add-iam-policy-binding $PROJECT \
---member serviceAccount:$FULL_NODE_SA_NAME \
---role roles/logging.logWriter > /dev/null
-
-gcloud projects add-iam-policy-binding $PROJECT \
---member serviceAccount:$FULL_NODE_SA_NAME \
---role roles/monitoring.metricWriter > /dev/null
-
-gcloud projects add-iam-policy-binding $PROJECT \
---member serviceAccount:$FULL_NODE_SA_NAME \
---role roles/monitoring.viewer > /dev/null
-
-gcloud iam service-accounts keys create credentials.json --iam-account $FULL_SA_NAME
-```
 
 ## bash
 * https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-1-114924737
@@ -311,49 +267,6 @@ curl "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=tru
 ```
 gcloud compute project-info describe
 ```
-
-## Cloud SQL
-```
-gcloud sql instances create $INSTANCE_NAME \
---database-version POSTGRES_9_6 \
---region "$INSTANCE_REGION" \
---tier db-f1-micro \
---storage-type HDD \
---async > /dev/null
-
-echo "Cloud SQL instance creation started.."
-
-# Running a loop to wait for the Cloud SQL instance to become "RUNNABLE"
-for run in {1..60}
-do
-  echo "Waiting for instance to finish starting.."
-  gcloud sql instances describe $INSTANCE_NAME \
-  --format="default(state)" | grep RUNNABLE
-  rc=$?
-  if [[ rc -eq 0 ]]; then
-    break
-  fi
-  sleep 10
-done
-
-gcloud sql instances describe $INSTANCE_NAME \
---format="default(state)" | grep RUNNABLE
-rc=$?
-if [[ rc -eq 1 ]]; then
-  echo "Instance creation failed or is taking unusually long"
-  exit 1
-elif [[ rc -eq 0 ]]; then
-  echo "Instance creation completed"
-fi
-
-
-# Making a Postgres user that is allowed to connect from any host
-gcloud sql users create $USER_NAME \
-'%' \
---instance $INSTANCE_NAME \
---password $USER_PASSWORD
-```
-
 
 ## GCR
 * https://gist.github.com/ahmetb/7ce6d741bd5baa194a3fac6b1fec8bb7
