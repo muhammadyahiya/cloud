@@ -293,11 +293,6 @@ function enable-api() {
 enable-api container.googleapis.com
 ```
 
-## API
+## Client libraries you can use to connect to Google APIs
 * https://medium.com/google-cloud/simple-google-api-auth-samples-for-service-accounts-installed-application-and-appengine-da30ee4648
 
-
-# billing
-```
-gcloud alpha billing accounts projects link <project_id> --account-id <account_id>
-```
