@@ -45,7 +45,7 @@ project=$(gcloud config get-value core/project 2> /dev/null)
 gcloud config set project $(gcloud projects list --filter='name:wordpress-dev' --format='value(project_id)')
 
 # get the GKE cluster endpoint
-gcloud container clusters describe porch-development --zone $(gcloud config get-value compute/zone) --format='get(endpoint)'
+gcloud container clusters describe mycluster --zone $(gcloud config get-value compute/zone) --format='get(endpoint)'
 
 ```
 
