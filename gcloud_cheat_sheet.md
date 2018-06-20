@@ -267,10 +267,6 @@ curl "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=tru
 gcloud compute project-info describe
 ```
 
-## GCR
-* https://gist.github.com/ahmetb/7ce6d741bd5baa194a3fac6b1fec8bb7
-* https://medium.com/google-cloud/gcr-io-tips-tricks-d80b3c67cb64
-
 ## StackDriver logging
 ```
 gcloud logging read "timestamp >= \"2018-04-19T00:30:00Z\"  and logName=projects/${project_id}/logs/requests and resource.type=http_load_balancer" --format="csv(httpRequest.remoteIp,httpRequest.requestUrl,timestamp)" --project=${project_id}
@@ -278,7 +274,22 @@ gcloud logging read "timestamp >= \"2018-04-19T00:30:00Z\"  and logName=projects
 
 ## Enable Service
 ```
-function enable-api() {
+gcloud services enable cloudapis.googleapis.com
+gcloud services enable cloudresourcemanager.googleapis.com
+gcloud services enable compute.googleapis.com
+gcloud services enable container.googleapis.com
+gcloud services enable containerregistry.googleapis.com
+gcloud services enable cloudbuild.googleapis.com
+gcloud services enable iam.googleapis.com
+gcloud services enable logging.googleapis.com
+gcloud services enable monitoring.googleapis.com
+gcloud services enable storage-api.googleapis.com
+gcloud services enable storage-component.googleapis.com
+gcloud services enable sourcerepo.googleapis.com
+```
+
+```
+function enable-service() {
   SERVICE=$1
   if [[ $(gcloud services list --format="value(serviceConfig.name)" \
                                 --filter="serviceConfig.name:$SERVICE" 2>&1) != \
@@ -290,7 +301,7 @@ function enable-api() {
   fi
 }
 
-enable-api container.googleapis.com
+enable-service container.googleapis.com
 ```
 
 ## Client libraries you can use to connect to Google APIs
