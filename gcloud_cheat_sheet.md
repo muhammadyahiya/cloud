@@ -192,7 +192,6 @@ gcloud compute forwarding-rules list
 ```
 
 ## forwarding-rules
-
 ```
 gcloud compute forwarding-rules list --filter=$(dig +short <dns_name>)
 gcloud compute forwarding-rules describe my-forwardingrule --region us-central1
@@ -276,6 +275,24 @@ gcloud compute project-info describe
 ```
 gcloud logging read "timestamp >= \"2018-04-19T00:30:00Z\"  and logName=projects/${project_id}/logs/requests and resource.type=http_load_balancer" --format="csv(httpRequest.remoteIp,httpRequest.requestUrl,timestamp)" --project=${project_id}
 ```
+
+## Enable Service
+```
+function enable-api() {
+  SERVICE=$1
+  if [[ $(gcloud services list --format="value(serviceConfig.name)" \
+                                --filter="serviceConfig.name:$SERVICE" 2>&1) != \
+                                "$SERVICE" ]]; then
+    echo "Enabling $SERVICE"
+    gcloud services enable $SERVICE
+  else
+    echo "$SERVICE is already enabled"
+  fi
+}
+
+enable-api container.googleapis.com
+```
+
 ## API
 * https://medium.com/google-cloud/simple-google-api-auth-samples-for-service-accounts-installed-application-and-appengine-da30ee4648
 
