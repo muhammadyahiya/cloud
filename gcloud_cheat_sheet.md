@@ -46,6 +46,20 @@ gcloud config set project $(gcloud projects list --filter='name:wordpress-dev' -
 
 # get the GKE cluster endpoint
 gcloud container clusters describe mycluster --zone $(gcloud config get-value compute/zone) --format='get(endpoint)'
+```
+
+```
+command -v gcloud >/dev/null 2>&1 || { \
+ echo >&2 "I require gcloud but it's not installed.  Aborting."; exit 1; }
+
+REGION=$(gcloud config get-value compute/region)
+if [[ -z "${REGION}" ]]; then
+    echo "https://cloud.google.com/compute/docs/regions-zones/changing-default-zone-region" 1>&2
+    echo "gcloud cli must be configured with a default region." 1>&2
+    echo "run 'gcloud config set compute/region REGION'." 1>&2
+    echo "replace 'REGION' with the region name like us-west1." 1>&2
+    exit 1;
+fi
 
 ```
 
