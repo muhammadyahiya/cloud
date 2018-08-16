@@ -254,6 +254,14 @@ gcloud compute instances list --filter='name:prod-es*' --format='value(INTERNAL_
 ## move instance
 `gcloud compute instances move <instance_wanna_move> --destination-zone=us-central1-a --zone=us-central1-c`
 
+## ssh & scp
+```
+#--verbosity=debug is great for debugging, showing the SSH command 
+# the following is a real word example for running a bastion server that talks to a GKE cluster (master authorized network)
+gcloud compute ssh --verbosity=debug <instance_name> --command "kubectl get nodes"
+
+gcloud compute scp  --recurse ../manifest <instance_name>:
+```
 
 ## generate ssh config 
 ```
