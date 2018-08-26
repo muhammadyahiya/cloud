@@ -175,9 +175,15 @@ gcloud compute instance-groups managed create nginx-group \
 https://cloud.google.com/vpc/docs/special-configurations#multiple-natgateways
 
 ```
+gsutil cp gs://nat-gw-template/startup.sh .
+
 gcloud compute instance-templates create nat-1 \
     --machine-type n1-standard-2 --can-ip-forward --tags natgw \
     --metadata-from-file=startup-script=startup.sh --address $nat_1_ip
+
+gcloud compute instance-templates create nat-2 \
+    --machine-type n1-standard-2 --can-ip-forward --tags natgw \
+    --metadata-from-file=startup-script=startup.sh  --address $nat_2_ip
 ```
 
 ## layer 3 network lb
