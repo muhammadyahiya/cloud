@@ -171,6 +171,15 @@ gcloud compute instance-groups managed create nginx-group \
          --target-pool nginx-pool
 ```
 
+### MIG with startup and shutdown scripts
+https://cloud.google.com/vpc/docs/special-configurations#multiple-natgateways
+
+```
+gcloud compute instance-templates create nat-1 \
+    --machine-type n1-standard-2 --can-ip-forward --tags natgw \
+    --metadata-from-file=startup-script=startup.sh --address $nat_1_ip
+```
+
 ## layer 3 network lb
 ```
 gcloud compute firewall-rules create www-firewall --allow tcp:80
