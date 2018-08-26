@@ -333,9 +333,12 @@ gcloud logging read "timestamp >= \"2018-04-19T00:30:00Z\"  and logName=projects
 
 ## Enable Service
 ```
-gcloud services enable cloudapis.googleapis.com
-gcloud services enable cloudresourcemanager.googleapis.com
-gcloud services enable compute.googleapis.com
+# chain 
+gcloud services enable cloudapis.googleapis.com && \
+cloudresourcemanager.googleapis.com && \
+compute.googleapis.com 
+
+# or not chain
 gcloud services enable container.googleapis.com
 gcloud services enable containerregistry.googleapis.com
 gcloud services enable cloudbuild.googleapis.com
