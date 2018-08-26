@@ -186,6 +186,21 @@ gcloud compute instance-templates create nat-2 \
     --metadata-from-file=startup-script=startup.sh  --address $nat_2_ip
 ```
 
+### route
+tag the instances with `no-ips`
+
+```
+gcloud compute instances add-tags existing-instance --tags no-ip
+```
+```
+gcloud compute routes create no-ip-internet-route \
+    --network custom-network1 \
+    --destination-range 0.0.0.0/0 \
+    --next-hop-instance nat-gateway \
+    --next-hop-instance-zone us-central1-a \
+    --tags no-ip --priority 800
+    ```
+
 ## layer 3 network lb
 ```
 gcloud compute firewall-rules create www-firewall --allow tcp:80
