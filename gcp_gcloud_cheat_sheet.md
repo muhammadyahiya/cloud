@@ -4,6 +4,8 @@
 * [resource-keys](https://cloud.google.com/sdk/gcloud/reference/topic/resource-keys)
 * https://cloud.google.com/sdk/docs/scripting-gcloud
 * http://cloudplatform.googleblog.com/2018/03/introducing-GCPs-new-interactive-CLI.html
+* https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-1-114924737
+* https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-2-4d049a656f1a
 
 ## auth
 ```
@@ -115,10 +117,6 @@ gcloud iam service-accounts list   --filter='email ~ [0-9]*-compute@.*'   --form
 gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
 ```
 
-
-## bash
-* https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-1-114924737
-* https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-2-4d049a656f1a
 
 ## kms
 ```
@@ -274,6 +272,7 @@ https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian
 * [resource-keys](https://cloud.google.com/sdk/gcloud/reference/topic/resource-keys)
 
 ```
+gcloud compute instances list --filter="zone:us-central1-a"
 gcloud compute instances list --project=dev --filter="name~^es"
 gcloud compute instances list --project=dev --filter=name:kafka --format="value(name,INTERNAL_IP)"
 gcloud compute instances list --filter=tags:kafka-node
