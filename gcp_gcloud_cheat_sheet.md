@@ -323,7 +323,8 @@ gcloud  compute instances list --log-http
 
 ## instance level metadata
 ```
-curl "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=true&alt=text" -H "Metadata-Flavor: Google"
+curl -s "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=true&alt=text" -H "Metadata-Flavor: Google"
+leader=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/leader" -H "Metadata-Flavor: Google")
 ```
 
 ## project level metadata
