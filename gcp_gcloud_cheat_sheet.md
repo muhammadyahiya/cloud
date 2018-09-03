@@ -34,9 +34,10 @@ gcloud compute zones list --filter=region:us-central1
 ## projects
 
 ```
-# get project_id
-project_id=$(gcloud config get-value core/project)
-project_id=$(gcloud config list project --format='value(core.project)')
+# various way to get project_id
+PROJECT_ID=$(gcloud config get-value core/project)
+PROJECT_ID=$(gcloud config list project --format='value(core.project)')
+PROJECT_ID=$(gcloud info --format='value(config.project)')
 
 # get project_number
 gcloud projects list --filter="name:${project_id}"  --format='value(project_number)'
