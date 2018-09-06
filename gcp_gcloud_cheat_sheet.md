@@ -117,7 +117,15 @@ gcloud iam service-accounts list   --filter='email ~ [0-9]*-compute@.*'   --form
 # add role to service account
 gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
 ```
+## cloud build 
 
+```
+# user defined
+gcloud container builds submit --config=cloudbuild.yaml --substitutions=_BRANCH_NAME=foo,_BUILD_NUMBER=1 .
+
+# override built in TAG_NAME
+gcloud container builds submit --config=cloudbuild.yaml --substitutions=TAG_NAME=v1.0.1
+```
 
 ## kms
 ```
