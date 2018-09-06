@@ -173,6 +173,7 @@ apt-get install -y nginx
 service nginx start
 sed -i -- 's/nginx/Google Cloud Platform - '"\$HOSTNAME"'/' /var/www/html/index.nginx-debian.html
 EOF
+
 gcloud compute instance-templates create nginx-template  --metadata-from-file startup-script=startup.sh
 gcloud compute target-pools create nginx-pool
 gcloud compute instance-templates create nginx-template \
