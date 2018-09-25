@@ -122,10 +122,10 @@ gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-15490
 
 ```
 # user defined
-gcloud container builds submit --config=cloudbuild.yaml --substitutions=_BRANCH_NAME=foo,_BUILD_NUMBER=1 .
+gcloud builds submit --config=cloudbuild.yaml --substitutions=_BRANCH_NAME=foo,_BUILD_NUMBER=1 .
 
 # override built in TAG_NAME
-gcloud container builds submit --config=cloudbuild.yaml --substitutions=TAG_NAME=v1.0.1
+gcloud builds submit --config=cloudbuild.yaml --substitutions=TAG_NAME=v1.0.1
 ```
 
 ## kms
