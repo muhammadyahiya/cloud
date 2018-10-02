@@ -82,7 +82,7 @@ fi
 
 ```
 
-## service account
+## service account and IAM
 ```
 # creaate jenkins sa
 gcloud iam service-accounts create jenkins --display-name jenkins
@@ -304,8 +304,13 @@ gcloud compute ssh --verbosity=debug <instance_name> --command "kubectl get node
 
 gcloud compute scp  --recurse ../manifest <instance_name>:
 ```
+### ssh port forwarding for elasticsearch
+```
+gcloud compute --project "stage-23704" ssh --zone "us-central1-c" "elasticsearch-1"  --ssh-flag="-L localhost:9200:localhost:9200"
+```
+The 2nd `localhost` is relative to  elasticsearch-1`
 
-## generate ssh config 
+### generate ssh config 
 ```
 gcloud compute config-ssh
 ```
