@@ -306,7 +306,7 @@ gcloud compute scp  --recurse ../manifest <instance_name>:
 ```
 ### ssh port forwarding for elasticsearch
 ```
-gcloud compute --project "stage-23704" ssh --zone "us-central1-c" "elasticsearch-1"  --ssh-flag="-L localhost:9200:localhost:9200"
+gcloud compute --project "foo" ssh --zone "us-central1-c" "elasticsearch-1"  --ssh-flag="-L localhost:9200:localhost:9200"
 ```
 The 2nd `localhost` is relative to  elasticsearch-1`
 
