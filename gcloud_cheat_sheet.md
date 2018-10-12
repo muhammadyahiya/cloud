@@ -389,3 +389,11 @@ enable-service container.googleapis.com
 ## Client libraries you can use to connect to Google APIs
 * https://medium.com/google-cloud/simple-google-api-auth-samples-for-service-accounts-installed-application-and-appengine-da30ee4648
 
+
+## chaining gcloud commands
+```
+gcloud compute forwarding-rules list --format 'value(NAME)' | xargs -I {}  gcloud compute forwarding-rules delete {}  --region us-west1 -q
+
+gcloud projects list --format='value(project_id)' | xargs -I {} gcloud compute addresses list --format='value(address)' --project {}  2>/dev/null | sort | uniq -c
+```
+
