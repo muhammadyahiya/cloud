@@ -286,11 +286,6 @@ gcloud compute instances list --project=dev --filter="name~^es"
 gcloud compute instances list --project=dev --filter=name:kafka --format="value(name,INTERNAL_IP)"
 gcloud compute instances list --filter=tags:kafka-node
 gcloud compute instances list --filter='machineType:g1-small'
-
-gcloud compute instances list --filter=name:prod-es --format='value(NAME)' | xargs -I {} -p gcloud compute instances stop {}
-
-gcloud compute instances list --filter='name:prod-es*' --format='value(INTERNAL_IP)' | xargs -I {} ssh {} "sudo chef-client"
-
 ```
 
 ## move instance
@@ -327,7 +322,6 @@ Use [gcloud compute operations describe URI] command to check the status of the 
 ## regional disk
 ```
  gcloud beta compute instance attach-disk micro1 --disk pd-west1 --disk-scope regional
- gcloud beta compute instance detach-disk micro1 --disk pd-west1 --disk-scope regional
 ```
 
 ## debugging
@@ -397,10 +391,9 @@ gcloud compute forwarding-rules list --format 'value(NAME)' | xargs -I {}  gclou
 gcloud projects list --format='value(project_id)' | xargs -I {} gcloud compute addresses list --format='value(address)' --project {}  2>/dev/null | sort | uniq -c
 
 gcloud compute instances list --filter=elasticsearch --format='value(NAME)' | xargs -I {} -p gcloud compute instances stop {}
-
 gcloud compute instances list --filter=elasticsearch --format='value(INTERNAL_IP)' | xargs -I {} ssh {} "sudo chef-client"
 
-
-
+# delete non default routes
+gcloud compute routes list --filter="NOT network=default" --format='value(NAME)' | xargs -I {} gcloud compute routes delete -q {}
 ```
 
