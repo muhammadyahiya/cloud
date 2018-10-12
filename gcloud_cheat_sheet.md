@@ -395,5 +395,12 @@ enable-service container.googleapis.com
 gcloud compute forwarding-rules list --format 'value(NAME)' | xargs -I {}  gcloud compute forwarding-rules delete {}  --region us-west1 -q
 
 gcloud projects list --format='value(project_id)' | xargs -I {} gcloud compute addresses list --format='value(address)' --project {}  2>/dev/null | sort | uniq -c
+
+gcloud compute instances list --filter=elasticsearch --format='value(NAME)' | xargs -I {} -p gcloud compute instances stop {}
+
+gcloud compute instances list --filter=elasticsearch --format='value(INTERNAL_IP)' | xargs -I {} ssh {} "sudo chef-client"
+
+
+
 ```
 
