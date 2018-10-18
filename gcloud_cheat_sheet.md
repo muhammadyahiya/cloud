@@ -340,6 +340,13 @@ leader=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/at
 gcloud compute project-info describe
 ```
 
+## GCP managed ssl certificate
+```
+gcloud beta compute ssl-certificates create example-mydomain --domains example.mydomain.com
+gcloud beta compute ssl-certificates list
+```
+
+
 ## StackDriver logging
 ```
 gcloud logging read "timestamp >= \"2018-04-19T00:30:00Z\"  and logName=projects/${project_id}/logs/requests and resource.type=http_load_balancer" --format="csv(httpRequest.remoteIp,httpRequest.requestUrl,timestamp)" --project=${project_id}
