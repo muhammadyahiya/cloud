@@ -344,6 +344,9 @@ gcloud compute project-info describe
 ```
 gcloud beta compute ssl-certificates create example-mydomain --domains example.mydomain.com
 gcloud beta compute ssl-certificates list
+gcloud beta compute ssl-certificates describe example-mydomain
+# It takes 30mins+ to provision the TLS, one of conditions is the target-https-proxies needs to be associated with the cert.
+gcloud beta compute target-https-proxies list
 ```
 
 
