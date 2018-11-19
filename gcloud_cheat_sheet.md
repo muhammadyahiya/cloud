@@ -43,6 +43,11 @@ PROJECT_ID=$(gcloud info --format='value(config.project)')
 # get project_number
 gcloud projects list --filter="name:${project_id}"  --format='value(project_number)'
 ```
+## billing
+```
+gcloud beta billing accounts list
+gcloud organizations list
+```
 
 ## switch gcloud context with gcloud config
 ```
