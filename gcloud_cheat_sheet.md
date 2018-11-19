@@ -88,6 +88,7 @@ fi
 ```
 
 ## service account and IAM
+* [When granting IAM roles, you can treat a service account either as a resource or as an identity](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts)
 ```
 # creaate jenkins sa
 gcloud iam service-accounts create jenkins --display-name jenkins
