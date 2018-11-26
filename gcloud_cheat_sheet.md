@@ -135,6 +135,9 @@ gcloud builds submit --config=cloudbuild.yaml --substitutions=TAG_NAME=v1.0.1
 ```
 
 ## kms
+* [cloud-encrypt-with-kms](https://codelabs.developers.google.com/codelabs/cloud-encrypt-with-kms/#0)
+* [Integrated with cloud build](https://cloud.google.com/cloud-build/docs/securing-builds/use-encrypted-secrets-credentials)
+
 ```
 # list all keyrings 
 gcloud kms keyrings list --location global
