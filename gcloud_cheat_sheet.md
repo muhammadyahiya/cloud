@@ -124,6 +124,11 @@ gcloud iam service-accounts list   --filter='email ~ [0-9]*-compute@.*'   --form
 # add role to service account
 gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
 ```
+```
+COMPUTE_ENGINE_SA_EMAIL=$(gcloud iam service-accounts list --filter="name:Compute Engine default service account" --format "value(email)")
+gsutil iam ch serviceAccount:${COMPUTE_ENGINE_SA_EMAIL}:objectViewer gs://bucket-name
+```
+
 ## app engine
 * https://medium.com/google-cloud/app-engine-project-cleanup-9647296e796a
 
