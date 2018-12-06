@@ -424,3 +424,9 @@ gcloud compute instances list --filter=elasticsearch --format='value(INTERNAL_IP
 gcloud compute routes list --filter="NOT network=default" --format='value(NAME)' | xargs -I {} gcloud compute routes delete -q {}
 ```
 
+## one liner to purge GCR images given a date
+```
+DATE=2018-10-01
+IMAGE=<project_id>/<image_name>
+gcloud container images list-tags gcr.io/$IMAGE --limit=999999 --sort-by=TIMESTAMP   --filter="timestamp.datetime < '${DATE}'" --format='get(digest)' | while read digest;do gcloud container images delete -q --force-delete-tags gcr.io/$IMAGE@$digest ;done
+```
