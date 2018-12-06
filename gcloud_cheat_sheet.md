@@ -413,20 +413,27 @@ enable-service container.googleapis.com
 
 ## chaining gcloud commands
 ```
-gcloud compute forwarding-rules list --format 'value(NAME)' | xargs -I {}  gcloud compute forwarding-rules delete {}  --region us-west1 -q
+gcloud compute forwarding-rules list --format 'value(NAME)' \
+| xargs -I {}  gcloud compute forwarding-rules delete {}  --region us-west1 -q
 
-gcloud projects list --format='value(project_id)' | xargs -I {} gcloud compute addresses list --format='value(address)' --project {}  2>/dev/null | sort | uniq -c
+gcloud projects list --format='value(project_id)' \
+| xargs -I {} gcloud compute addresses list --format='value(address)' --project {}  2>/dev/null | sort | uniq -c
 
-gcloud compute instances list --filter=elasticsearch --format='value(NAME)' | xargs -I {} -p gcloud compute instances stop {}
-gcloud compute instances list --filter=elasticsearch --format='value(INTERNAL_IP)' | xargs -I {} ssh {} "sudo chef-client"
+gcloud compute instances list --filter=elasticsearch --format='value(NAME)' \
+| xargs -I {} -p gcloud compute instances stop {}
+gcloud compute instances list --filter=elasticsearch --format='value(INTERNAL_IP)' \
+| xargs -I {} ssh {} "sudo chef-client"
 
 # delete non default routes
-gcloud compute routes list --filter="NOT network=default" --format='value(NAME)' | xargs -I {} gcloud compute routes delete -q {}
+gcloud compute routes list --filter="NOT network=default" --format='value(NAME)' \
+| xargs -I {} gcloud compute routes delete -q {}
 ```
 
 ## one liner to purge GCR images given a date
 ```
 DATE=2018-10-01
 IMAGE=<project_id>/<image_name>
-gcloud container images list-tags gcr.io/$IMAGE --limit=999999 --sort-by=TIMESTAMP   --filter="timestamp.datetime < '${DATE}'" --format='get(digest)' | while read digest;do gcloud container images delete -q --force-delete-tags gcr.io/$IMAGE@$digest ;done
+gcloud container images list-tags gcr.io/$IMAGE --limit=unlimited --sort-by=TIMESTAMP   \
+--filter="NOT tags:* AND timestamp.datetime < '${DATE}'" --format='get(digest)' | \
+while read digest;do gcloud container images delete -q --force-delete-tags gcr.io/$IMAGE@$digest ;done
 ```
