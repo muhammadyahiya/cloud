@@ -237,7 +237,7 @@ gcloud compute forwarding-rules create nginx-lb \
          --ports=80 \
          --target-pool nginx-pool
          
-gcloud compute forwarding-rules list
+gcloud compute firewall-rules list --sort-by=NETWORK
 
 ```
 
