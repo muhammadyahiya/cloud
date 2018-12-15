@@ -228,6 +228,20 @@ gcloud compute routes create no-ip-internet-route \
     --next-hop-instance-zone us-central1-a \
     --tags no-ip --priority 800
 ```
+## firewall rules
+```
+gcloud beta compute firewall-rules create mynetwork-allow-icmp --network mynetwork \
+--action ALLOW --direction INGRESS --rules icmp
+gcloud beta compute firewall-rules create mynetwork-allow-ssh --network mynetwork \
+--action ALLOW --direction INGRESS --rules tcp:22
+gcloud beta compute firewall-rules create mynetwork-allow-internal --network \
+mynetwork --action ALLOW --direction INGRESS --rules all \
+--source-ranges 10.128.0.0/9
+gcloud beta compute firewall-rules list \
+--filter="network:mynetwork"
+
+```
+
 
 ## layer 3 network lb
 ```
