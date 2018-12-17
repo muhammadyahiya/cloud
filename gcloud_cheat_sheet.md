@@ -467,4 +467,24 @@ gcloud beta container clusters create private-cluster \
     --master-ipv4-cidr 172.16.0.16/28 \
     --enable-ip-alias \
     --create-subnetwork ""
+
+
+gcloud compute networks subnets create my-subnet \
+    --network default \
+    --range 10.0.4.0/22 \
+    --enable-private-ip-google-access \
+    --region us-central1 \
+    --secondary-range my-svc-range=10.0.32.0/20,my-pod-range=10.4.0.0/14
+
+gcloud beta container clusters create private-cluster2 \
+    --private-cluster \
+    --enable-ip-alias \
+    --master-ipv4-cidr 172.16.0.32/28 \
+    --subnetwork my-subnet \
+    --services-secondary-range-name my-svc-range \
+    --cluster-secondary-range-name my-pod-range
+ 
+ gcloud container clusters update private-cluster2 \
+    --enable-master-authorized-networks \
+    --master-authorized-networks <external_ip_of_kubectl_instance>
 ```
