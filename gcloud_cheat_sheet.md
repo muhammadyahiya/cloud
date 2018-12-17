@@ -459,3 +459,12 @@ gcloud container images list-tags gcr.io/$IMAGE --limit=unlimited --sort-by=TIME
 --filter="NOT tags:* AND timestamp.datetime < '${DATE}'" --format='get(digest)' | \
 while read digest;do gcloud container images delete -q --force-delete-tags gcr.io/$IMAGE@$digest ;done
 ```
+## GKE
+```
+# create a private cluster
+gcloud beta container clusters create private-cluster \
+    --private-cluster \
+    --master-ipv4-cidr 172.16.0.16/28 \
+    --enable-ip-alias \
+    --create-subnetwork ""
+```
