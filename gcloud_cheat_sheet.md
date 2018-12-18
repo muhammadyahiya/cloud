@@ -142,6 +142,21 @@ gcloud builds submit --config=cloudbuild.yaml --substitutions=_BRANCH_NAME=foo,_
 gcloud builds submit --config=cloudbuild.yaml --substitutions=TAG_NAME=v1.0.1
 ```
 
+### Cloud build trigger GCE rolling replace/start
+* https://medium.com/google-cloud/continuous-delivery-in-google-cloud-platform-cloud-build-with-compute-engine-a95bf4fd1821
+* https://cloud.google.com/compute/docs/instance-groups/updating-managed-instance-groups#performing_a_rolling_replace_or_restart
+
+```
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/gcp-cloudbuild-gce-angular', '.' ]
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: [ 'beta', 'compute', 'instance-groups', 'managed', 'rolling-action', 'restart', 'gce-angular-instance-group', '--zone=us-east1-b' ]
+images:
+- 'gcr.io/$PROJECT_ID/gcp-cloudbuild-gce-angular'
+
+```
+
 ## kms
 * [cloud-encrypt-with-kms](https://codelabs.developers.google.com/codelabs/cloud-encrypt-with-kms/#0)
 * [Integrated with cloud build](https://cloud.google.com/cloud-build/docs/securing-builds/use-encrypted-secrets-credentials)
