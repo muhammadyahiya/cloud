@@ -1,11 +1,15 @@
+## References
 * [have fun with them](https://cloudplatform.googleblog.com/2016/06/filtering-and-formatting-fun-with.html)
 * [projections](https://cloud.google.com/sdk/gcloud/reference/topic/projections)
 * [filters](https://cloud.google.com/sdk/gcloud/reference/topic/filters)
 * [resource-keys](https://cloud.google.com/sdk/gcloud/reference/topic/resource-keys)
 * [scripting-gcloud](https://cloud.google.com/sdk/docs/scripting-gcloud)
-* http://cloudplatform.googleblog.com/2018/03/introducing-GCPs-new-interactive-CLI.html
+* [gcloud alpha interactive](http://cloudplatform.googleblog.com/2018/03/introducing-GCPs-new-interactive-CLI.html)
 * https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-1-114924737
 * https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-2-4d049a656f1a
+
+## Other cheatsheets
+* https://github.com/dennyzhang/cheatsheet-gcp-A4
 
 ## auth
 ```
