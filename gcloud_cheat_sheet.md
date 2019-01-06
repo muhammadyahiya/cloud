@@ -363,6 +363,13 @@ gcloud compute --project "foo" ssh --zone "us-central1-c" "elasticsearch-1"  --s
 ```
 The 2nd `localhost` is relative to  elasticsearch-1`
 
+### ssh reverse port forwarding 
+for example, how to connect to home server's flask server (tcp port 5000) for a demo or a local game server in development
+```
+GOOGLE_CLOUD_PROJECT=$(gcloud config get-value project)
+gcloud compute --project "${GOOGLE_CLOUD_PROJECT}" ssh --zone "us-west1-c" --ssh-flag="-v -N -R :5000:localhost:5000" "google_cloud_bastion_server"
+```
+
 ### generate ssh config 
 ```
 gcloud compute config-ssh
