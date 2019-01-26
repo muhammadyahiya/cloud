@@ -93,6 +93,12 @@ fi
 
 ## service account and IAM
 * [When granting IAM roles, you can treat a service account either as a resource or as an identity](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts)
+
+### List IAM policy on the project level
+```
+gcloud projects get-iam-policy <project_id>
+```
+### service account level
 ```
 # creaate jenkins sa
 gcloud iam service-accounts create jenkins --display-name jenkins
@@ -118,7 +124,6 @@ gcloud iam service-accounts keys create jenkins-sa.json --iam-account $SA_EMAIL
 
 ```
 gcloud iam service-accounts keys list --iam-account=vault-admin@<project_id>.iam.gserviceaccount.com
-gcloud projects get-iam-policy <project_id>
 gcloud iam service-accounts list
 gcloud iam service-accounts get-iam-policy <sa_email>
 
@@ -128,6 +133,8 @@ gcloud iam service-accounts list   --filter='email ~ [0-9]*-compute@.*'   --form
 # add role to service account
 gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
 ```
+
+### GCS bucket level
 ```
 COMPUTE_ENGINE_SA_EMAIL=$(gcloud iam service-accounts list --filter="name:Compute Engine default service account" --format "value(email)")
 gsutil iam ch serviceAccount:${COMPUTE_ENGINE_SA_EMAIL}:objectViewer gs://bucket-name
