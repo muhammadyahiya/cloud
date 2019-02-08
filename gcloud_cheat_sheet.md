@@ -11,6 +11,17 @@
 ## Other cheatsheets
 * https://github.com/dennyzhang/cheatsheet-gcp-A4
 
+## multiple gcloud config
+
+```
+gcloud config configurations list
+NAME           IS_ACTIVE  ACCOUNT                  PROJECT             DEFAULT_ZONE  DEFAULT_REGION
+default        False      name@example.com     operator  us-west1-b    us-west1
+someone  True       someone@gmail.com  dev-env     us-west1-b    us-west1
+~/.config/gcloud/configurations
+$gcloud config configurations activate default
+```
+
 ## auth
 ```
 gcloud auth list
