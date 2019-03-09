@@ -532,3 +532,9 @@ gcloud beta container clusters create private-cluster2 \
     --enable-master-authorized-networks \
     --master-authorized-networks <external_ip_of_kubectl_instance>
 ```
+
+## Machine Learning
+```
+brew install bat
+gcloud ml language analyze-entities --content="Michelangelo Caravaggio, Italian painter, is known for 'The Calling of Saint Matthew'." | bat  -l json
+```
