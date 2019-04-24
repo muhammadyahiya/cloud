@@ -7,6 +7,7 @@
 * [gcloud alpha interactive](http://cloudplatform.googleblog.com/2018/03/introducing-GCPs-new-interactive-CLI.html)
 * https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-1-114924737
 * https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-2-4d049a656f1a
+* https://gist.github.com/bborysenko/97749fe0514b819a5a87611e6aea3db8
 
 ## Other cheatsheets
 * https://github.com/dennyzhang/cheatsheet-gcp-A4
