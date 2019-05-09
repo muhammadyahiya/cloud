@@ -289,7 +289,7 @@ gcloud beta compute firewall-rules list \
 ```
 
 
-## layer 3 network lb
+## layer 4 network lb
 ```
 gcloud compute firewall-rules create www-firewall --allow tcp:80
 gcloud compute forwarding-rules create nginx-lb \
@@ -341,11 +341,17 @@ gcloud compute forwarding-rules describe my-http-forwardingrule --global
 
 ## address
 ```
+# get the external IP address of the instance
+gcloud compute instances describe single-node \
+     --format='value(networkInterfaces.accessConfigs[0].natIP)
+     
 gcloud compute addresses describe https-lb --global --format json
 
 # list all IP addresses
 gcloud projects list --format='value(project_id)' | xargs -I {} gcloud compute addresses list --format='value(address)' --project {}  2>/dev/null | sort | uniq -c
 ```
+
+
 ## compute engine image
 ```
 gcloud compute images list --filter=name:debian --uri
