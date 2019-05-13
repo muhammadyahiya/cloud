@@ -446,7 +446,14 @@ gcloud beta compute target-https-proxies list
 gcloud logging read "timestamp >= \"2018-04-19T00:30:00Z\"  and logName=projects/${project_id}/logs/requests and resource.type=http_load_balancer" --format="csv(httpRequest.remoteIp,httpRequest.requestUrl,timestamp)" --project=${project_id}
 ```
 
-## Enable Service
+## Service
+
+### list service available
+
+`gcloud services list --available`
+
+### Enable Service 
+
 ```
 # chain 
 gcloud services enable cloudapis.googleapis.com && \
