@@ -213,8 +213,9 @@ curl -v "https://cloudkms.googleapis.com/v1/projects/$DEVSHELL_PROJECT_ID/locati
   -H "Content-Type:application/json" \
 | jq .plaintext -r | base64 -d    
 ```
+## compute engine
 
-## gcloud command for creating an instance? 
+### gcloud command for creating an instance? 
 from web console
 ```
 gcloud compute instances create [INSTANCE_NAME] \
@@ -222,10 +223,80 @@ gcloud compute instances create [INSTANCE_NAME] \
   --image-project [IMAGE_PROJECT] \
   --create-disk image=[DISK_IMAGE],image-project=[DISK_IMAGE_PROJECT],size=[SIZE_GB],type=[DISK_TYPE]
   
-gcloud beta compute --project=victory-demo-dev instances create micro1 --zone=us-west1-a --machine-type=f1-micro --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=398028291895-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --min-cpu-platform=Automatic --image=debian-9-stretch-v20180510 --image-project=debian-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --boot-disk-device-name=micro1
+gcloud compute instances create micro1 --zone=us-west1-a --machine-type=f1-micro --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=398028291895-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --min-cpu-platform=Automatic --image=debian-9-stretch-v20180510 --image-project=debian-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --boot-disk-device-name=micro1
 ```
 
-## instances, template, target-pool and instance group
+### list compute images
+```
+gcloud compute images list --filter=name:debian --uri
+https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-8-jessie-v20180109
+https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20180105
+
+# Use the following command to see available non-Shielded VM Windows Server images
+gcloud compute images list --project windows-cloud --no-standard-images
+# Use the following command to see a list of available Shielded VM images, including Windows images
+gcloud compute images list --project gce-uefi-images --no-standard-images
+```
+
+### list an instance 
+* [filters](https://cloud.google.com/sdk/gcloud/reference/topic/filters)
+* [resource-keys](https://cloud.google.com/sdk/gcloud/reference/topic/resource-keys)
+
+```
+gcloud compute instances list --filter="zone:us-central1-a"
+gcloud compute instances list --project=dev --filter="name~^es"
+gcloud compute instances list --project=dev --filter=name:kafka --format="value(name,INTERNAL_IP)"
+gcloud compute instances list --filter=tags:kafka-node
+gcloud compute instances list --filter='machineType:g1-small'
+```
+
+### move instance
+`gcloud compute instances move <instance_wanna_move> --destination-zone=us-central1-a --zone=us-central1-c`
+
+### ssh & scp
+```
+#--verbosity=debug is great for debugging, showing the SSH command 
+# the following is a real word example for running a bastion server that talks to a GKE cluster (master authorized network)
+gcloud compute ssh --verbosity=debug <instance_name> --command "kubectl get nodes"
+
+gcloud compute scp  --recurse ../manifest <instance_name>:
+```
+### ssh port forwarding for elasticsearch
+```
+gcloud compute --project "foo" ssh --zone "us-central1-c" "elasticsearch-1"  --ssh-flag="-L localhost:9200:localhost:9200"
+```
+The 2nd `localhost` is relative to  elasticsearch-1`
+
+### ssh reverse port forwarding 
+for example, how to connect to home server's flask server (tcp port 5000) for a demo or a local game server in development
+```
+GOOGLE_CLOUD_PROJECT=$(gcloud config get-value project)
+gcloud compute --project "${GOOGLE_CLOUD_PROJECT}" ssh --zone "us-west1-c" --ssh-flag="-v -N -R :5000:localhost:5000" "google_cloud_bastion_server"
+```
+
+### generate ssh config 
+```
+gcloud compute config-ssh
+```
+
+### debugging
+gcloud debugging: `gcloud  compute instances list --log-http`
+[serial port debug](https://cloud.google.com/compute/docs/instances/interacting-with-serial-console)
+
+
+### instance level metadata
+```
+curl -s "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=true&alt=text" -H "Metadata-Flavor: Google"
+leader=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/leader" -H "Metadata-Flavor: Google")
+```
+
+### project level metadata
+```
+gcloud compute project-info describe
+gcloud compute project-info describe --flatten="commonInstanceMetadata[]"
+```
+
+### instances, template, target-pool and instance group
 ```
 cat << EOF > startup.sh
 #! /bin/bash
@@ -258,6 +329,19 @@ gcloud compute instance-templates create nat-2 \
     --machine-type n1-standard-2 --can-ip-forward --tags natgw \
     --metadata-from-file=startup-script=startup.sh  --address $nat_2_ip
 ```
+### disk snapshot
+```
+gcloud compute disks snapshot kafka-data1-1 --async --snapshot-names=kafka-data-1 --project project_a --zone us-west1-a
+Use [gcloud compute operations describe URI] command to check the status of the operation(s).
+```
+
+### regional disk
+```
+ gcloud beta compute instance attach-disk micro1 --disk pd-west1 --disk-scope regional
+```
+
+
+## Networking
 
 ### route
 tag the instances with `no-ips`
@@ -271,7 +355,7 @@ gcloud compute routes create no-ip-internet-route \
     --next-hop-instance-zone us-central1-a \
     --tags no-ip --priority 800
 ```
-## firewall rules
+### firewall rules
 ```
 ## ALLOW
 gcloud beta compute firewall-rules create mynetwork-allow-icmp --network mynetwork \
@@ -293,8 +377,7 @@ gcloud beta compute firewall-rules list \
 
 ```
 
-
-## layer 4 network lb
+### layer 4 network lb
 ```
 gcloud compute firewall-rules create www-firewall --allow tcp:80
 gcloud compute forwarding-rules create nginx-lb \
@@ -306,7 +389,7 @@ gcloud compute firewall-rules list --sort-by=NETWORK
 
 ```
 
-## layer 7 http lb
+### layer 7 http lb
 * https://cloud.google.com/solutions/scalable-and-resilient-apps
 
 ```
@@ -337,14 +420,14 @@ gcloud compute forwarding-rules list
 
 ```
 
-## forwarding-rules
+### forwarding-rules
 ```
 gcloud compute forwarding-rules list --filter=$(dig +short <dns_name>)
 gcloud compute forwarding-rules describe my-forwardingrule --region us-central1
 gcloud compute forwarding-rules describe my-http-forwardingrule --global
 ```
 
-## address
+### address
 ```
 # get the external IP address of the instance
 gcloud compute instances describe single-node \
@@ -357,84 +440,6 @@ gcloud projects list --format='value(project_id)' | xargs -I {} gcloud compute a
 ```
 
 
-## compute engine image
-```
-gcloud compute images list --filter=name:debian --uri
-https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-8-jessie-v20180109
-https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20180105
-```
-
-## list an instance 
-* [filters](https://cloud.google.com/sdk/gcloud/reference/topic/filters)
-* [resource-keys](https://cloud.google.com/sdk/gcloud/reference/topic/resource-keys)
-
-```
-gcloud compute instances list --filter="zone:us-central1-a"
-gcloud compute instances list --project=dev --filter="name~^es"
-gcloud compute instances list --project=dev --filter=name:kafka --format="value(name,INTERNAL_IP)"
-gcloud compute instances list --filter=tags:kafka-node
-gcloud compute instances list --filter='machineType:g1-small'
-```
-
-## move instance
-`gcloud compute instances move <instance_wanna_move> --destination-zone=us-central1-a --zone=us-central1-c`
-
-## ssh & scp
-```
-#--verbosity=debug is great for debugging, showing the SSH command 
-# the following is a real word example for running a bastion server that talks to a GKE cluster (master authorized network)
-gcloud compute ssh --verbosity=debug <instance_name> --command "kubectl get nodes"
-
-gcloud compute scp  --recurse ../manifest <instance_name>:
-```
-### ssh port forwarding for elasticsearch
-```
-gcloud compute --project "foo" ssh --zone "us-central1-c" "elasticsearch-1"  --ssh-flag="-L localhost:9200:localhost:9200"
-```
-The 2nd `localhost` is relative to  elasticsearch-1`
-
-### ssh reverse port forwarding 
-for example, how to connect to home server's flask server (tcp port 5000) for a demo or a local game server in development
-```
-GOOGLE_CLOUD_PROJECT=$(gcloud config get-value project)
-gcloud compute --project "${GOOGLE_CLOUD_PROJECT}" ssh --zone "us-west1-c" --ssh-flag="-v -N -R :5000:localhost:5000" "google_cloud_bastion_server"
-```
-
-### generate ssh config 
-```
-gcloud compute config-ssh
-```
-
-## serial port debug
-* https://cloud.google.com/compute/docs/instances/interacting-with-serial-console
-
-## disk snapshot
-```
-gcloud compute disks snapshot kafka-data1-1 --async --snapshot-names=kafka-data-1 --project project_a --zone us-west1-a
-Use [gcloud compute operations describe URI] command to check the status of the operation(s).
-```
-
-## regional disk
-```
- gcloud beta compute instance attach-disk micro1 --disk pd-west1 --disk-scope regional
-```
-
-## debugging
-```
-gcloud  compute instances list --log-http
-```
-
-## instance level metadata
-```
-curl -s "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=true&alt=text" -H "Metadata-Flavor: Google"
-leader=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/leader" -H "Metadata-Flavor: Google")
-```
-
-## project level metadata
-```
-gcloud compute project-info describe
-gcloud compute project-info describe --flatten="commonInstanceMetadata[]"
-```
 
 ## GCP managed ssl certificate
 ```
