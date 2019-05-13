@@ -428,6 +428,7 @@ leader=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/at
 ## project level metadata
 ```
 gcloud compute project-info describe
+gcloud compute project-info describe --flatten="commonInstanceMetadata[]"
 ```
 
 ## GCP managed ssl certificate
