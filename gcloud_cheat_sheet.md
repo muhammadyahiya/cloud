@@ -558,6 +558,18 @@ gcloud beta container clusters create private-cluster2 \
     --master-authorized-networks <external_ip_of_kubectl_instance>
 ```
 
+```
+# create a GKE cluster with CloudRun,Istio, HPA enabled
+gcloud beta container clusters create run-gke \
+  --addons HorizontalPodAutoscaling,HttpLoadBalancing,Istio,CloudRun \
+  --scopes cloud-platform \
+  --zone us-central1-a \
+  --machine-type n1-standard-4 \
+  --enable-stackdriver-kubernetes \
+  --no-enable-ip-alias
+```
+
+
 ## Machine Learning
 ```
 brew install bat
