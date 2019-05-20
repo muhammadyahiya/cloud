@@ -365,22 +365,19 @@ gcloud compute routes create no-ip-internet-route \
 ```
 ### firewall rules
 ```
-## ALLOW
-gcloud beta compute firewall-rules create mynetwork-allow-icmp --network mynetwork \
---action ALLOW --direction INGRESS --rules icmp
-gcloud beta compute firewall-rules create mynetwork-allow-ssh --network mynetwork \
---action ALLOW --direction INGRESS --rules tcp:22
-gcloud beta compute firewall-rules create mynetwork-allow-internal --network \
+# allow SSH, RDP and ICMP for the given network
+gcloud compute firewall-rules create managementnet-allow-icmp-ssh-rdp --direction=INGRESS --priority=1000 --network=managementnet --action=ALLOW --rules=tcp:22,3389,icmp --source-ranges=0.0.0.0/0
+# allow internal from given source range
+gcloud compute firewall-rules create mynetwork-allow-internal --network \
 mynetwork --action ALLOW --direction INGRESS --rules all \
 --source-ranges 10.128.0.0/9
-gcloud beta compute firewall-rules list \
---filter="network:mynetwork"
+gcloud compute firewall-rules list --filter="network:mynetwork"
 
 ## DENY
-gcloud beta compute firewall-rules create mynetwork-deny-icmp \
+gcloud compute firewall-rules create mynetwork-deny-icmp \
 --network mynetwork --action DENY --direction EGRESS --rules icmp \
 --destination-ranges 10.132.0.2 --priority 500
-gcloud beta compute firewall-rules list \
+gcloud compute firewall-rules list \
 --filter="network:mynetwork AND name=mynetwork-deny-icmp"
 
 ```
