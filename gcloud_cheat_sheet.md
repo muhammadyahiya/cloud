@@ -364,6 +364,8 @@ gcloud compute routes create no-ip-internet-route \
     --tags no-ip --priority 800
 ```
 ### firewall rules
+* https://medium.com/@swongra/protect-your-google-cloud-instances-with-firewall-rules-69cce960fba
+
 ```
 # allow SSH, RDP and ICMP for the given network
 gcloud compute firewall-rules create managementnet-allow-icmp-ssh-rdp --direction=INGRESS --priority=1000 --network=managementnet --action=ALLOW --rules=tcp:22,3389,icmp --source-ranges=0.0.0.0/0
