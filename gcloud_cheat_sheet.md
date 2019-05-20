@@ -380,6 +380,9 @@ gcloud compute firewall-rules create mynetwork-deny-icmp \
 gcloud compute firewall-rules list \
 --filter="network:mynetwork AND name=mynetwork-deny-icmp"
 
+# sort-by
+gcloud compute firewall-rules list --sort-by=NETWORK
+
 ```
 
 ### layer 4 network lb
