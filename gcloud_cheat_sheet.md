@@ -42,11 +42,7 @@ gcloud info --format flattened
 export PROJECT=$(gcloud info --format='value(config.project)')
 ```
 
-## zones
-To return a list of zones given a region
-```
-gcloud compute zones list --filter=region:us-central1
-```
+
 
 ## projects
 
@@ -59,10 +55,11 @@ PROJECT_ID=$(gcloud info --format='value(config.project)')
 # get project_number
 gcloud projects list --filter="name:${project_id}"  --format='value(project_number)'
 ```
-## billing
+
+## zones
+To return a list of zones given a region
 ```
-gcloud beta billing accounts list
-gcloud organizations list
+gcloud compute zones list --filter=region:us-central1
 ```
 
 ## switch gcloud context with gcloud config
@@ -74,7 +71,6 @@ gcloud config set project salt-163215
 gcloud config set compute/region us-west1
 gcloud config set compute/zone us-west1-a
 alias demo='gcloud config set account pythonrocksk8s201702@gmail.com && gcloud config set project salt-163215 && gcloud config set compute/region us-west1 && gcloud config set compute/zone us-west1-a'
-
 
 
 cluster=$(gcloud config get-value container/cluster 2> /dev/null)
@@ -101,6 +97,12 @@ if [[ -z "${REGION}" ]]; then
     exit 1;
 fi
 
+```
+
+## billing
+```
+gcloud beta billing accounts list
+gcloud organizations list
 ```
 
 ## service account and IAM
