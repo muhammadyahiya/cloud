@@ -12,15 +12,51 @@
 ## Other cheatsheets
 * https://github.com/dennyzhang/cheatsheet-gcp-A4
 
-## multiple gcloud config
+## multiple gcloud config configurations
+* https://www.jhanley.com/google-cloud-understanding-gcloud-configurations/
 
 ```
 $gcloud config configurations list
 NAME           IS_ACTIVE  ACCOUNT                  PROJECT             DEFAULT_ZONE  DEFAULT_REGION
 default        False      name@example.com     operator  us-west1-b    us-west1
 someone  True       someone@gmail.com  dev-env     us-west1-b    us-west1
-
 $gcloud config configurations activate default
+```
+
+### switch gcloud context with gcloud config
+```
+gcloud config list
+gcloud config set account pythonrocksk8s201702@gmail.com 
+gcloud config set project salt-163215
+gcloud config set compute/region us-west1
+gcloud config set compute/zone us-west1-a
+alias demo='gcloud config set account pythonrocksk8s201702@gmail.com && gcloud config set project salt-163215 && gcloud config set compute/region us-west1 && gcloud config set compute/zone us-west1-a'
+
+
+cluster=$(gcloud config get-value container/cluster 2> /dev/null)
+zone=$(gcloud config get-value compute/zone 2> /dev/null)
+project=$(gcloud config get-value core/project 2> /dev/null)
+
+# switch project based on the name
+gcloud config set project $(gcloud projects list --filter='name:wordpress-dev' --format='value(project_id)')
+
+# get the GKE cluster endpoint
+gcloud container clusters describe mycluster --zone $(gcloud config get-value compute/zone) --format='get(endpoint)'
+```
+
+```
+command -v gcloud >/dev/null 2>&1 || { \
+ echo >&2 "I require gcloud but it's not installed.  Aborting."; exit 1; }
+
+REGION=$(gcloud config get-value compute/region)
+if [[ -z "${REGION}" ]]; then
+    echo "https://cloud.google.com/compute/docs/regions-zones/changing-default-zone-region" 1>&2
+    echo "gcloud cli must be configured with a default region." 1>&2
+    echo "run 'gcloud config set compute/region REGION'." 1>&2
+    echo "replace 'REGION' with the region name like us-west1." 1>&2
+    exit 1;
+fi
+
 ```
 
 ## auth
@@ -62,42 +98,7 @@ To return a list of zones given a region
 gcloud compute zones list --filter=region:us-central1
 ```
 
-## switch gcloud context with gcloud config
-```
-gcloud config list
-gcloud config configurations list
-gcloud config set account pythonrocksk8s201702@gmail.com 
-gcloud config set project salt-163215
-gcloud config set compute/region us-west1
-gcloud config set compute/zone us-west1-a
-alias demo='gcloud config set account pythonrocksk8s201702@gmail.com && gcloud config set project salt-163215 && gcloud config set compute/region us-west1 && gcloud config set compute/zone us-west1-a'
 
-
-cluster=$(gcloud config get-value container/cluster 2> /dev/null)
-zone=$(gcloud config get-value compute/zone 2> /dev/null)
-project=$(gcloud config get-value core/project 2> /dev/null)
-
-# switch project based on the name
-gcloud config set project $(gcloud projects list --filter='name:wordpress-dev' --format='value(project_id)')
-
-# get the GKE cluster endpoint
-gcloud container clusters describe mycluster --zone $(gcloud config get-value compute/zone) --format='get(endpoint)'
-```
-
-```
-command -v gcloud >/dev/null 2>&1 || { \
- echo >&2 "I require gcloud but it's not installed.  Aborting."; exit 1; }
-
-REGION=$(gcloud config get-value compute/region)
-if [[ -z "${REGION}" ]]; then
-    echo "https://cloud.google.com/compute/docs/regions-zones/changing-default-zone-region" 1>&2
-    echo "gcloud cli must be configured with a default region." 1>&2
-    echo "run 'gcloud config set compute/region REGION'." 1>&2
-    echo "replace 'REGION' with the region name like us-west1." 1>&2
-    exit 1;
-fi
-
-```
 
 ## billing
 ```
