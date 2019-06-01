@@ -583,6 +583,12 @@ gcloud beta container clusters create run-gke \
 ```
 
 
+```
+# create a VPC native cluster
+gcloud container clusters create k1 --network custom-ip-vpc --subnetwork subnet-alias  --enable-ip-alias --cluster-ipv4-cidr=/16   --services-ipv4-cidr=/22
+```
+
+
 ## Machine Learning
 ```
 brew install bat
