@@ -78,8 +78,6 @@ gcloud info --format flattened
 export PROJECT=$(gcloud info --format='value(config.project)')
 ```
 
-
-
 ## projects
 
 ```
@@ -153,6 +151,19 @@ gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-15490
 ```
 COMPUTE_ENGINE_SA_EMAIL=$(gcloud iam service-accounts list --filter="name:Compute Engine default service account" --format "value(email)")
 gsutil iam ch serviceAccount:${COMPUTE_ENGINE_SA_EMAIL}:objectViewer gs://bucket-name
+```
+
+## Custom Roles
+```
+# list predefined roles
+gcloud iam roles list
+# list custom roles
+gcloud iam roles list --project $PROJECT_ID
+
+# create custom role in 2 ways
+1. gcloud iam roles create editor --project $PROJECT_ID --file role-definition.yaml
+2. gcloud iam roles create viewer --project $DEVSHELL_PROJECT_ID --title "Role Viewer" --description "Custom role description." --permissions compute.instances.get,compu
+te.instances.list --stage ALPHA
 ```
 
 ## app engine
