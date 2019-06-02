@@ -96,32 +96,33 @@ To return a list of zones given a region
 gcloud compute zones list --filter=region:us-central1
 ```
 
-
-
 ## billing
 ```
 gcloud beta billing accounts list
 gcloud organizations list
 ```
 
-## service account and IAM
+## service account
 * [When granting IAM roles, you can treat a service account either as a resource or as an identity](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts)
 
-### List IAM policy on the project level
 ```
-gcloud projects get-iam-policy <project_id>
-```
-### service account level
-```
-# creaate jenkins sa
-gcloud iam service-accounts create jenkins --display-name jenkins
-
 export SA_EMAIL=$(gcloud iam service-accounts list \
     --filter="displayName:jenkins" --format='value(email)')
 export PROJECT=$(gcloud info --format='value(config.project)')
 
-gcloud projects add-iam-policy-binding $PROJECT \
-    --role roles/storage.admin --member serviceAccount:$SA_EMAIL
+# creaate and list sa
+gcloud iam service-accounts create jenkins --display-name jenkins
+gcloud iam service-accounts list
+gcloud iam service-accounts list   --filter='email ~ [0-9]*-compute@.*'   --format='table(email)'
+
+# create & list sa key  
+gcloud iam service-accounts keys create jenkins-sa.json --iam-account $SA_EMAIL    
+gcloud iam service-accounts keys list --iam-account=vault-admin@<project_id>.iam.gserviceaccount.com
+
+# project level: grant roles to sa
+gcloud projects get-iam-policy $PROJECT
+gcloud projects add-iam-policy-binding $PROJECT  --role roles/storage.admin \
+    --member serviceAccount:$SA_EMAIL
 gcloud projects add-iam-policy-binding $PROJECT --role roles/compute.instanceAdmin.v1 \
     --member serviceAccount:$SA_EMAIL
 gcloud projects add-iam-policy-binding $PROJECT --role roles/compute.networkAdmin \
@@ -130,20 +131,9 @@ gcloud projects add-iam-policy-binding $PROJECT --role roles/compute.securityAdm
     --member serviceAccount:$SA_EMAIL
 gcloud projects add-iam-policy-binding $PROJECT --role roles/iam.serviceAccountActor \
     --member serviceAccount:$SA_EMAIL
-    
-# create service account key    
-gcloud iam service-accounts keys create jenkins-sa.json --iam-account $SA_EMAIL    
-```
 
-```
-gcloud iam service-accounts keys list --iam-account=vault-admin@<project_id>.iam.gserviceaccount.com
-gcloud iam service-accounts list
+# service account level: add role to service account
 gcloud iam service-accounts get-iam-policy <sa_email>
-
-# get the compute engine account 
-gcloud iam service-accounts list   --filter='email ~ [0-9]*-compute@.*'   --format='table(email)'
-
-# add role to service account
 gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
 ```
 
@@ -153,7 +143,7 @@ COMPUTE_ENGINE_SA_EMAIL=$(gcloud iam service-accounts list --filter="name:Comput
 gsutil iam ch serviceAccount:${COMPUTE_ENGINE_SA_EMAIL}:objectViewer gs://bucket-name
 ```
 
-## Custom Roles
+### Custom Roles
 ```
 # list predefined roles
 gcloud iam roles list
