@@ -86,8 +86,9 @@ PROJECT_ID=$(gcloud config get-value core/project)
 PROJECT_ID=$(gcloud config list project --format='value(core.project)')
 PROJECT_ID=$(gcloud info --format='value(config.project)')
 
-# get project_number
-gcloud projects list --filter="name:${project_id}"  --format='value(project_number)'
+# get project_number given project_id or name
+gcloud projects list --filter="project_id:${project_id}"  --format='value(project_number)'
+gcloud projects list --filter="name:${project_name}"  --format='value(project_number)'
 ```
 
 ## zones
