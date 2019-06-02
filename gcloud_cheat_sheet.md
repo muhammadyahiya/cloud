@@ -160,9 +160,9 @@ gcloud iam roles list
 # list custom roles
 gcloud iam roles list --project $PROJECT_ID
 
-# create custom role in 2 ways
+# create custom role in the following 2 ways, either on project level (--project [PROJECT_ID]) or org level (--organization [ORGANIZATION_ID])
 1. gcloud iam roles create editor --project $PROJECT_ID --file role-definition.yaml
-2. gcloud iam roles create viewer --project $DEVSHELL_PROJECT_ID --title "Role Viewer" --description "Custom role description." --permissions compute.instances.get,compu
+2. gcloud iam roles create viewer --project $PROJECT_ID --title "Role Viewer" --description "Custom role description." --permissions compute.instances.get,compu
 te.instances.list --stage ALPHA
 ```
 
