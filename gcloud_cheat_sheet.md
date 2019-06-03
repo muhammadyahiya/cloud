@@ -203,7 +203,7 @@ gcloud kms keyrings add-iam-policy-binding $KEYRING_NAME \
 gcloud kms keyrings add-iam-policy-binding $KEYRING_NAME \
     --location global \
     --member user:$USER_EMAIL \
-    --role roles/cloudkms.admin
+    --role roles/cloudkms.cryptoKeyEncrypterDecrypter
     
 # Encrypt and Decrypt in REST API
 curl -v "https://cloudkms.googleapis.com/v1/projects/$DEVSHELL_PROJECT_ID/locations/global/keyRings/$KEYRING_NAME/cryptoKeys/$CRYPTOKEY_NAME:encrypt" \
