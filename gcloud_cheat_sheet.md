@@ -103,7 +103,16 @@ gcloud beta billing accounts list
 gcloud organizations list
 ```
 
-## service account
+## IAM list permission and roles for a given resource
+```
+gcloud iam list-testable-permissions <uri>
+gcloud iam list-grantable-roles <uri>
+
+# get uri e.g.
+gcloud projects list --uri
+```
+
+## IAM service account
 * [When granting IAM roles, you can treat a service account either as a resource or as an identity](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts)
 
 ```
