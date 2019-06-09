@@ -16,11 +16,13 @@
 * https://www.jhanley.com/google-cloud-understanding-gcloud-configurations/
 
 ```
-$gcloud config configurations list
-NAME           IS_ACTIVE  ACCOUNT                  PROJECT             DEFAULT_ZONE  DEFAULT_REGION
-default        False      name@example.com     operator  us-west1-b    us-west1
-someone  True       someone@gmail.com  dev-env     us-west1-b    us-west1
-$gcloud config configurations activate default
+gcloud config configurations create pythonrocks
+gcloud config configurations list
+gcloud config configurations activate pythonrocks
+gcloud config set core/account pythonrocks@gmail.com
+gcloud auth login
+gcloud projects list
+gcloud config set project dev-193420
 ```
 
 ### switch gcloud context with gcloud config
