@@ -607,3 +607,7 @@ gcloud container clusters create k1 --network custom-ip-vpc --subnetwork subnet-
 brew install bat
 gcloud ml language analyze-entities --content="Michelangelo Caravaggio, Italian painter, is known for 'The Calling of Saint Matthew'." | bat  -l json
 ```
+
+## Deployment Manager
+* https://cloud.google.com/sdk/gcloud/reference/deployment-manager/deployments/
+Play with the commands for preview and cancel-preview. 
