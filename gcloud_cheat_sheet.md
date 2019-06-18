@@ -278,6 +278,18 @@ gcloud compute ssh --verbosity=debug <instance_name> --command "kubectl get node
 
 gcloud compute scp  --recurse ../manifest <instance_name>:
 ```
+
+### SSH via IAP
+* https://cloud.google.com/iap/docs/using-tcp-forwarding
+
+```
+# find out access-config-name's name
+gcloud compute instances describe oregon1
+# remove the external IP
+gcloud compute instances delete-access-config  oregon1 --access-config-name "External NAT"
+# connect via IAP, assuming the IAP is granted to the account used for login. 
+gcloud beta compute ssh oregon1 --tunnel-through-iap
+```
 ### ssh port forwarding for elasticsearch
 ```
 gcloud compute --project "foo" ssh --zone "us-central1-c" "elasticsearch-1"  --ssh-flag="-L localhost:9200:localhost:9200"
