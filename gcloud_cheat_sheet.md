@@ -14,6 +14,7 @@
 
 ## multiple gcloud config configurations
 * https://www.jhanley.com/google-cloud-understanding-gcloud-configurations/
+* https://medium.com/infrastructure-adventures/working-with-multiple-environment-in-gcloud-cli-93b2d4e8cf1e
 
 ```
 gcloud config configurations create pythonrocks
