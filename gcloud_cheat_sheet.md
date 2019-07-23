@@ -615,6 +615,11 @@ gcloud container clusters create k1 --network custom-ip-vpc --subnetwork subnet-
 ```
 
 
+```
+# generate a ~/.kube/config for private cluster with private endpoint
+gcloud container clusters get-credentials private-cluster --zone us-central1-a --internal-ip
+```
+
 ## Machine Learning
 ```
 brew install bat
