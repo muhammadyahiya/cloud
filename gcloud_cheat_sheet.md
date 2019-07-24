@@ -109,7 +109,12 @@ gcloud organizations list
 ## IAM list permission and roles for a given resource
 ```
 gcloud iam list-testable-permissions <uri>
+e.g gcloud iam list-testable-permissions //cloudresourcemanager.googleapis.com/projects/$PROJECT_ID
+
 gcloud iam list-grantable-roles <uri>
+e.g. 
+gcloud iam list-grantable-roles //cloudresourcemanager.googleapis.com/projects/$PROJECT_ID
+gcloud iam list-grantable-roles https://www.googleapis.com/compute/v1/projects/$PROJECT_ID/zones/us-central1-a/instances/iowa1
 
 # get uri e.g.
 gcloud projects list --uri
