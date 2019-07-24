@@ -43,8 +43,6 @@ project=$(gcloud config get-value core/project 2> /dev/null)
 # switch project based on the name
 gcloud config set project $(gcloud projects list --filter='name:wordpress-dev' --format='value(project_id)')
 
-# get the GKE cluster endpoint
-gcloud container clusters describe mycluster --zone $(gcloud config get-value compute/zone) --format='get(endpoint)'
 ```
 
 ```
@@ -616,9 +614,15 @@ gcloud beta container clusters create run-gke \
 
 ```
 # create a VPC native cluster
-gcloud container clusters create k1 --network custom-ip-vpc --subnetwork subnet-alias  --enable-ip-alias --cluster-ipv4-cidr=/16   --services-ipv4-cidr=/22
+gcloud container clusters create k1 \
+--network custom-ip-vpc --subnetwork subnet-alias \
+--enable-ip-alias --cluster-ipv4-cidr=/16   --services-ipv4-cidr=/22
 ```
 
+```
+# get the GKE endpoint
+gcloud container clusters describe mycluster --format='get(endpoint)'
+```
 
 ```
 # generate a ~/.kube/config for private cluster with private endpoint
