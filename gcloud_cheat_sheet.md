@@ -119,7 +119,6 @@ gcloud projects list --uri
 ```
 
 ## IAM service account
-* [When granting IAM roles, you can treat a service account either as a resource or as an identity](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts)
 
 ```
 export SA_EMAIL=$(gcloud iam service-accounts list \
@@ -147,10 +146,23 @@ gcloud projects add-iam-policy-binding $PROJECT --role roles/compute.securityAdm
     --member serviceAccount:$SA_EMAIL
 gcloud projects add-iam-policy-binding $PROJECT --role roles/iam.serviceAccountActor \
     --member serviceAccount:$SA_EMAIL
+```
+* [When granting IAM roles, you can treat a service account either as a resource or as an identity](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts)
 
+```
 # service account level: add role to service account
 gcloud iam service-accounts get-iam-policy <sa_email>
 gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
+```
+* https://cloud.google.com/iam/docs/creating-short-lived-service-account-credentials
+* https://medium.com/@tanujbolisetty/gcp-impersonate-service-accounts-36eaa247f87c
+* https://medium.com/wescale/how-to-generate-and-use-temporary-credentials-on-google-cloud-platform-b425ef95a00d
+* https://cloud.google.com/iam/credentials/reference/rest/v1/projects.serviceAccounts/generateAccessToken shows the lifetime of the OAuth token of 3600 seconds by default
+
+```
+# user:godevopsrocks@gmail.com impersonate as a svc account terraform@${PROJECT_ID}.iam.gserviceaccount.com
+gcloud iam service-accounts add-iam-policy-binding  terraform@${PROJECT_ID}.iam.gserviceaccount.com --member=user:godevopsrocks@gmail.com --role roles/iam.serviceAccountTokenCreator
+gcloud container clusters list --impersonate-service-account=terraform@${PROJECT_ID}.iam.gserviceaccount.com
 ```
 
 ### GCS bucket level
