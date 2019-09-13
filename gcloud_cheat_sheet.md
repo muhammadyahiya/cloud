@@ -641,6 +641,18 @@ gcloud container clusters describe mycluster --format='get(endpoint)'
 gcloud container clusters get-credentials private-cluster --zone us-central1-a --internal-ip
 ```
 
+## Cloud Run
+```
+# deploy a service on Cloud Run in us-central1 and allow unauthenticated user
+gcloud beta run deploy --image gcr.io/${PROJECT-ID}/helloworld --platform managed --region us-central1 --allow-unauthenticated
+
+# list services
+gcloud beta run services list
+# get endpoint url for a service
+gcloud beta run services describe <service_name> --format="get(status.url)"
+```
+
+
 ## Machine Learning
 ```
 brew install bat
