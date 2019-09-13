@@ -149,10 +149,14 @@ gcloud projects list --filter="project_id:${project_id}"  --format='value(projec
 gcloud projects list --filter="name:${project_name}"  --format='value(project_number)'
 ```
 
-## zones
+## zones & regions
 To return a list of zones given a region
 ```
 gcloud compute zones list --filter=region:us-central1
+```
+```
+# list regions
+gcloud compute regions list
 ```
 
 ## billing
