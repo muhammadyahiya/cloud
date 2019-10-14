@@ -384,6 +384,18 @@ gcloud compute --project "${GOOGLE_CLOUD_PROJECT}" ssh --zone "us-west1-c" --ssh
 gcloud compute config-ssh
 ```
 
+### Windows RDP reset windows password
+returns the IP and password for creating the RDP connection. 
+```
+gcloud compute reset-windows-password qa-iceberg-instance --user=jdoe
+
+ip_address: 104.199.119.166
+password:   Ks(;_gx7Bf2d.NP
+username:   jode
+```
+
+
+
 ### debugging
 gcloud debugging: `gcloud  compute instances list --log-http`
 [serial port debug](https://cloud.google.com/compute/docs/instances/interacting-with-serial-console)
