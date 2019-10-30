@@ -195,7 +195,10 @@ gcloud iam service-accounts list   --filter='email ~ [0-9]*-compute@.*'   --form
 gcloud iam service-accounts keys create jenkins-sa.json --iam-account $SA_EMAIL    
 gcloud iam service-accounts keys list --iam-account=vault-admin@<project_id>.iam.gserviceaccount.com
 
-# project level: grant roles to sa
+## project level: get a list of roles assigned to a given sa such as terraform
+ gcloud projects get-iam-policy ${PROJECT_ID} --flatten="bindings[].members" --filter="bindings.members:serviceAccount:terraform@${PROJECT_ID}.iam.gserviceaccount.com"
+
+# project level: grant roles to a given sa
 gcloud projects get-iam-policy $PROJECT
 gcloud projects add-iam-policy-binding $PROJECT  --role roles/storage.admin \
     --member serviceAccount:$SA_EMAIL
