@@ -80,17 +80,17 @@ gcloud config configurations activate pythonrocks
 gcloud config set core/account pythonrocks@gmail.com
 gcloud auth login
 gcloud projects list
-gcloud config set project dev-193420
+gcloud config set project mygcp-demo
 ```
 
 ### switch gcloud context with gcloud config
 ```
 gcloud config list
-gcloud config set account pythonrocksk8s201702@gmail.com 
-gcloud config set project salt-163215
+gcloud config set account pythonrocks@gmail.com 
+gcloud config set project mygcp-demo
 gcloud config set compute/region us-west1
 gcloud config set compute/zone us-west1-a
-alias demo='gcloud config set account pythonrocksk8s201702@gmail.com && gcloud config set project salt-163215 && gcloud config set compute/region us-west1 && gcloud config set compute/zone us-west1-a'
+alias demo='gcloud config set account pythonrocks@gmail.com && gcloud config set project mygcp-demo && gcloud config set compute/region us-west1 && gcloud config set compute/zone us-west1-a'
 
 
 cluster=$(gcloud config get-value container/cluster 2> /dev/null)
@@ -140,12 +140,12 @@ export PROJECT=$(gcloud info --format='value(config.project)')
 
 ```
 # various way to get project_id
-PROJECT_ID=$(gcloud config get-value core/project)
+PROJECT_ID=$(gcloud config get-value core/project 2>/dev/null)
 PROJECT_ID=$(gcloud config list project --format='value(core.project)')
 PROJECT_ID=$(gcloud info --format='value(config.project)')
 
 # get project_number given project_id or name
-gcloud projects list --filter="project_id:${project_id}"  --format='value(project_number)'
+gcloud projects list --filter="project_id:${PROJECT_ID}"  --format='value(project_number)'
 gcloud projects list --filter="name:${project_name}"  --format='value(project_number)'
 ```
 
