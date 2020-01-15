@@ -717,6 +717,14 @@ gcloud container clusters describe mycluster --format='get(endpoint)'
 gcloud container clusters get-credentials private-cluster --zone us-central1-a --internal-ip
 ```
 
+### create a GKE cluster with label and query it later
+
+```
+gcloud container clusters create example-cluster --labels env=dev
+gcloud container clusters list --filter resourceLabels.env=dev 
+```
+
+
 ## Cloud Run
 ```
 # deploy a service on Cloud Run in us-central1 and allow unauthenticated user
