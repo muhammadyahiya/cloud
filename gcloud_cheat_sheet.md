@@ -117,7 +117,8 @@ fi
 ```
 
 ## auth
-https://stackoverflow.com/questions/53306131/difference-between-gcloud-auth-application-default-login-and-gcloud-auth-logi/53307505
+* https://stackoverflow.com/questions/53306131/difference-between-gcloud-auth-application-default-login-and-gcloud-auth-logi/53307505
+* https://medium.com/google-cloud/local-remote-authentication-with-google-cloud-platform-afe3aa017b95
 
 ```
 gcloud auth list
