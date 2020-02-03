@@ -588,7 +588,12 @@ gcloud compute addresses describe https-lb --global --format json
 gcloud projects list --format='value(project_id)' | xargs -I {} gcloud compute addresses list --format='value(address)' --project {}  2>/dev/null | sort | uniq -c
 ```
 
+## interconnect 
 
+```
+# list Google Compute Engine interconnect locations
+gcloud compute interconnects locations list
+```
 
 ## GCP managed ssl certificate
 ```
