@@ -166,16 +166,25 @@ gcloud compute zones list --filter=region:us-central1
 gcloud compute regions list
 ```
 
-## organization & folder
+## organization
 ```
 ORG_ID=$(gcloud organizations list --format 'value(ID)')
 # list top level folders
 gcloud resource-manager folders list --organization=$ORG_ID
 # list sub folders given upper level folder id
 gcloud resource-manager folders list --organization=$FOLDER_ID
-# grant role to a user
-gcloud resource-manager folders add-iam-policy-binding $FOLDER_ID \
-            --member='user:test-user@gmail.com' --role='roles/editor'
+
+# grant roles to a user
+ORGANIZATION_ADMIN_ADDRESS='user:developer1@example.com'
+gcloud resource-manager folders add-iam-policy-binding ${folder_id} \
+  --member=${ORGANIZATION_ADMIN_ADDRESS} \
+  --role=roles/resourcemanager.folderAdmin
+gcloud resource-manager folders add-iam-policy-binding ${folder_id} \
+  --member=${ORGANIZATION_ADMIN_ADDRESS} \
+  --role=roles/storage.admin
+gcloud resource-manager folders add-iam-policy-binding ${folder_id} \
+  --member=${ORGANIZATION_ADMIN_ADDRESS} \
+  --role=roles/billing.projectManager
 ```
 
 ## billing
