@@ -180,8 +180,11 @@ gcloud resource-manager folders add-iam-policy-binding $FOLDER_ID \
 
 ## billing
 ```
-gcloud beta billing accounts list
 gcloud organizations list
+gcloud beta billing accounts list
+# link a billing account with a project, assuming the user or svc account has "Billing Account User" role. 
+gcloud beta billing projects link ${project_id} \
+            --billing-account ${ORGANIZATION_BILLING_ACCOUNT}
 ```
 
 ## IAM list permission and roles for a given resource
