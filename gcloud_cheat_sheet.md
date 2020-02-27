@@ -491,6 +491,13 @@ Use [gcloud compute operations describe URI] command to check the status of the 
  gcloud beta compute instance attach-disk micro1 --disk pd-west1 --disk-scope regional
 ```
 
+## secret manager 
+
+```
+gcloud beta secrets list
+gcloud beta secrets versions access latest --secret=my_ssh_private_key
+```
+
 
 ## Networking
 
