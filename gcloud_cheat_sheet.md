@@ -35,6 +35,7 @@ Table of Contents
     * [MIG with startup and shutdown scripts](#mig-with-startup-and-shutdown-scripts)
     * [disk snapshot](#disk-snapshot)
     * [regional disk](#regional-disk)
+* [Secret Manager](#secret-manager)
 * [Networking](#networking)
     * [network and subnets](#network-and-subnets)
     * [route](#route)
