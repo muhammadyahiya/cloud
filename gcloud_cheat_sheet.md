@@ -341,6 +341,23 @@ curl -v "https://cloudkms.googleapis.com/v1/projects/$DEVSHELL_PROJECT_ID/locati
   -H "Content-Type:application/json" \
 | jq .plaintext -r | base64 -d    
 ```
+
+## secret manager 
+* https://blog.scalesec.com/gcp-secret-manager-first-look-eaa9b0620da1
+
+```
+# create a secret
+gcloud beta secrets create SECRET_NAME --replication-policy="automatic"
+#create a secret version
+gcloud beta secrets versions add "SECRET_NAME" --data-file="/path/to/file.txt"
+# list
+gcloud beta secrets list
+# read
+gcloud beta secrets versions access latest --secret=my_ssh_private_key
+#update the labels (metadata) of a secret
+gcloud beta secrets update SECRET_NAME --update-labels=KEY=VALUE
+```
+
 ## compute engine
 
 ### gcloud command for creating an instance? 
@@ -492,12 +509,6 @@ Use [gcloud compute operations describe URI] command to check the status of the 
  gcloud beta compute instance attach-disk micro1 --disk pd-west1 --disk-scope regional
 ```
 
-## secret manager 
-
-```
-gcloud beta secrets list
-gcloud beta secrets versions access latest --secret=my_ssh_private_key
-```
 
 
 ## Networking
