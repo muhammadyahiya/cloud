@@ -227,11 +227,9 @@ gcloud iam service-accounts list   --filter='email ~ [0-9]*-compute@.*'   --form
 gcloud iam service-accounts keys create jenkins-sa.json --iam-account $SA_EMAIL    
 gcloud iam service-accounts keys list --iam-account=vault-admin@<project_id>.iam.gserviceaccount.com
 
-## project level: get a list of roles assigned to a given sa such as terraform
- gcloud projects get-iam-policy ${PROJECT_ID} --flatten="bindings[].members" --filter="bindings.members:serviceAccount:terraform@${PROJECT_ID}.iam.gserviceaccount.com"
-
-# project level: grant roles to a given sa
-gcloud projects get-iam-policy $PROJECT
+## project level: treat service account as an identity
+ gcloud projects get-iam-policy ${PROJECT} --flatten="bindings[].members" --filter="bindings.members:serviceAccount:terraform@${PROJECT_ID}.iam.gserviceaccount.com"
+ 
 gcloud projects add-iam-policy-binding $PROJECT  --role roles/storage.admin \
     --member serviceAccount:$SA_EMAIL
 gcloud projects add-iam-policy-binding $PROJECT --role roles/compute.instanceAdmin.v1 \
@@ -245,9 +243,17 @@ gcloud projects add-iam-policy-binding $PROJECT --role roles/iam.serviceAccountA
 ```
 * [When granting IAM roles, you can treat a service account either as a resource or as an identity](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts)
 
+# service account:treat service account as a resource
 ```
-# service account level: add role to service account
-gcloud iam service-accounts get-iam-policy <sa_email>
+gcloud iam service-accounts get-iam-policy <sa_email>, eg. 
+gcloud iam service-accounts get-iam-policy secret-accessor-dev@$PROJECT_ID.iam.gserviceaccount.com --project $PROJECT_ID
+bindings:
+- members:
+  - serviceAccount:<project-id>.svc.id.goog[default/secret-accessor-dev]
+  role: roles/iam.workloadIdentityUser
+etag: BwWhFqqv9aQ=
+version: 1
+
 gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
 ```
 * https://cloud.google.com/iam/docs/creating-short-lived-service-account-credentials
