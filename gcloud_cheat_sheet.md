@@ -11,7 +11,7 @@ Table of Contents
 * [organization](#organization)
 * [billing](#billing)
 * [IAM list permission and roles for a given resource](#iam-list-permission-and-roles-for-a-given-resource)
-* [service account](#iam-service-account)
+* [service account](#service-account-treat-service-account-as-an-identity)
     * [GCS bucket level](#gcs-bucket-level)
     * [Custom Roles](#custom-roles)
 * [app engine](#app-engine)
