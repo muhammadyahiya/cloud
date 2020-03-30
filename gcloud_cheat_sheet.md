@@ -269,8 +269,9 @@ gcloud container clusters list --impersonate-service-account=terraform@${PROJECT
 
 ### GCS bucket level
 ```
+gsutil iam get gs://${BUCKET_NAME}  -p ${PROJECT_ID}
 COMPUTE_ENGINE_SA_EMAIL=$(gcloud iam service-accounts list --filter="name:Compute Engine default service account" --format "value(email)")
-gsutil iam ch serviceAccount:${COMPUTE_ENGINE_SA_EMAIL}:objectViewer gs://bucket-name
+gsutil iam ch serviceAccount:${COMPUTE_ENGINE_SA_EMAIL}:objectViewer gs://${BUCKET_NAME}
 ```
 
 ### Custom Roles
