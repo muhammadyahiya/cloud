@@ -199,6 +199,8 @@ gcloud beta billing projects link ${project_id} \
 
 ## IAM list permission and roles for a given resource
 ```
+gcloud iam roles describe roles/container.admin
+
 gcloud iam list-testable-permissions <uri>
 e.g gcloud iam list-testable-permissions //cloudresourcemanager.googleapis.com/projects/$PROJECT_ID
 
