@@ -173,7 +173,9 @@ ORG_ID=$(gcloud organizations list --format 'value(ID)')
 # list top level folders
 gcloud resource-manager folders list --organization=$ORG_ID
 # list sub folders given upper level folder id
-gcloud resource-manager folders list --organization=$FOLDER_ID
+gcloud resource-manager folders list --folder=$FOLDER_ID
+# get iam policy for the folder
+gcloud resource-manager folders get-iam-policy $FOLDER_ID
 
 # grant roles to a user
 ORGANIZATION_ADMIN_ADDRESS='user:developer1@example.com'
