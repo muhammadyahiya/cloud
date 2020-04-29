@@ -1,69 +1,4 @@
-
-Table of Contents
-=================
-
-      * [References](#references)
-      * [Other cheatsheets](#other-cheatsheets)
-      * [multiple gcloud config configurations](#multiple-gcloud-config-configurations)
-         * [switch gcloud context with gcloud config](#switch-gcloud-context-with-gcloud-config)
-      * [auth](#auth)
-      * [info](#info)
-      * [projects](#projects)
-      * [zones &amp; regions](#zones--regions)
-      * [organization](#organization)
-      * [billing](#billing)
-      * [IAM list permission and roles for a given resource](#iam-list-permission-and-roles-for-a-given-resource)
-      * [service account: treat service account as an identity](#service-account-treat-service-account-as-an-identity)
-   * [service account:treat service account as a resource](#service-accounttreat-service-account-as-a-resource)
-         * [GCS bucket level](#gcs-bucket-level)
-         * [Custom Roles](#custom-roles)
-      * [app engine](#app-engine)
-      * [cloud build](#cloud-build)
-         * [Cloud build trigger GCE rolling replace/start](#cloud-build-trigger-gce-rolling-replacestart)
-      * [kms](#kms)
-      * [secret manager](#secret-manager)
-      * [compute engine](#compute-engine)
-         * [gcloud command for creating an instance?](#gcloud-command-for-creating-an-instance)
-         * [list compute images](#list-compute-images)
-         * [list an instance](#list-an-instance)
-         * [move instance](#move-instance)
-         * [ssh &amp; scp](#ssh--scp)
-         * [SSH via IAP](#ssh-via-iap)
-         * [ssh port forwarding for elasticsearch](#ssh-port-forwarding-for-elasticsearch)
-         * [ssh reverse port forwarding](#ssh-reverse-port-forwarding)
-         * [generate ssh config](#generate-ssh-config)
-         * [Windows RDP reset windows password](#windows-rdp-reset-windows-password)
-         * [debugging](#debugging)
-         * [instance level metadata](#instance-level-metadata)
-         * [project level metadata](#project-level-metadata)
-         * [instances, template, target-pool and instance group](#instances-template-target-pool-and-instance-group)
-         * [MIG with startup and shutdown scripts](#mig-with-startup-and-shutdown-scripts)
-         * [disk snapshot](#disk-snapshot)
-         * [regional disk](#regional-disk)
-      * [Networking](#networking)
-         * [network and subnets](#network-and-subnets)
-         * [route](#route)
-         * [firewall rules](#firewall-rules)
-         * [layer 4 network lb](#layer-4-network-lb)
-         * [layer 7 http lb](#layer-7-http-lb)
-         * [forwarding-rules](#forwarding-rules)
-         * [address](#address)
-      * [interconnect](#interconnect)
-      * [GCP managed ssl certificate](#gcp-managed-ssl-certificate)
-      * [StackDriver logging](#stackdriver-logging)
-      * [Service](#service)
-         * [list service available](#list-service-available)
-         * [Enable Service](#enable-service)
-      * [Client libraries you can use to connect to Google APIs](#client-libraries-you-can-use-to-connect-to-google-apis)
-      * [chaining gcloud commands](#chaining-gcloud-commands)
-      * [one liner to purge GCR images given a date](#one-liner-to-purge-gcr-images-given-a-date)
-      * [GKE](#gke)
-         * [create a GKE cluster with label and query it later](#create-a-gke-cluster-with-label-and-query-it-later)
-      * [Cloud Run](#cloud-run)
-      * [Machine Learning](#machine-learning)
-      * [Deployment Manager](#deployment-manager)
- 
-## References
+## 0.1. References
 * [have fun with them](https://cloudplatform.googleblog.com/2016/06/filtering-and-formatting-fun-with.html)
 * [projections](https://cloud.google.com/sdk/gcloud/reference/topic/projections)
 * [filters](https://cloud.google.com/sdk/gcloud/reference/topic/filters)
@@ -74,10 +9,10 @@ Table of Contents
 * https://medium.com/@Joachim8675309/getting-started-with-gcloud-sdk-part-2-4d049a656f1a
 * https://gist.github.com/bborysenko/97749fe0514b819a5a87611e6aea3db8
 
-## Other cheatsheets
+## 0.2. Other cheatsheets
 * https://github.com/dennyzhang/cheatsheet-gcp-A4
 
-## multiple gcloud config configurations
+## 0.3. Manage multiple gcloud config configurations
 * https://www.jhanley.com/google-cloud-understanding-gcloud-configurations/
 * https://medium.com/infrastructure-adventures/working-with-multiple-environment-in-gcloud-cli-93b2d4e8cf1e
 
@@ -90,7 +25,8 @@ gcloud projects list
 gcloud config set project mygcp-demo
 ```
 
-### switch gcloud context with gcloud config
+### 0.3.1. Switch gcloud context with gcloud config
+
 ```
 gcloud config list
 gcloud config set account pythonrocks@gmail.com 
@@ -99,17 +35,13 @@ gcloud config set compute/region us-west1
 gcloud config set compute/zone us-west1-a
 alias demo='gcloud config set account pythonrocks@gmail.com && gcloud config set project mygcp-demo && gcloud config set compute/region us-west1 && gcloud config set compute/zone us-west1-a'
 
-
 cluster=$(gcloud config get-value container/cluster 2> /dev/null)
 zone=$(gcloud config get-value compute/zone 2> /dev/null)
 project=$(gcloud config get-value core/project 2> /dev/null)
 
-# switch project based on the name
+#switch project based on the name
 gcloud config set project $(gcloud projects list --filter='name:wordpress-dev' --format='value(project_id)')
 
-```
-
-```
 command -v gcloud >/dev/null 2>&1 || { \
  echo >&2 "I require gcloud but it's not installed.  Aborting."; exit 1; }
 
@@ -124,7 +56,7 @@ fi
 
 ```
 
-## auth
+## 0.4. Auth
 * https://stackoverflow.com/questions/53306131/difference-between-gcloud-auth-application-default-login-and-gcloud-auth-logi/53307505
 * https://medium.com/google-cloud/local-remote-authentication-with-google-cloud-platform-afe3aa017b95
 
@@ -144,13 +76,13 @@ kubectl uses OAuth token generated by
 * `gcloud auth print-access-token` generates new token
 
 
-## info
+## 0.5. info
 ```
 gcloud info --format flattened
 export PROJECT=$(gcloud info --format='value(config.project)')
 ```
 
-## projects
+## 0.6. projects
 
 ```
 # various way to get project_id
@@ -163,7 +95,7 @@ gcloud projects list --filter="project_id:${PROJECT_ID}"  --format='value(projec
 gcloud projects list --filter="name:${project_name}"  --format='value(project_number)'
 ```
 
-## zones & regions
+## 0.7. zones & regions
 To return a list of zones given a region
 ```
 gcloud compute zones list --filter=region:us-central1
@@ -173,7 +105,7 @@ gcloud compute zones list --filter=region:us-central1
 gcloud compute regions list
 ```
 
-## organization
+## 0.8. organization
 ```
 ORG_ID=$(gcloud organizations list --format 'value(ID)')
 # list top level folders
@@ -196,16 +128,16 @@ gcloud resource-manager folders add-iam-policy-binding ${folder_id} \
   --role=roles/billing.projectManager
 ```
 
-## billing
+## 0.9. billing
 ```
 gcloud organizations list
 gcloud beta billing accounts list
-# link a billing account with a project, assuming the user or svc account has "Billing Account User" role. 
+# link a billing account with a project, assuming the user or service account has "Billing Account User" role. 
 gcloud beta billing projects link ${project_id} \
             --billing-account ${ORGANIZATION_BILLING_ACCOUNT}
 ```
 
-## IAM list permission and roles for a given resource
+## 0.10. iam
 ```
 gcloud iam roles describe roles/container.admin
 
@@ -221,8 +153,10 @@ gcloud iam list-grantable-roles https://www.googleapis.com/compute/v1/projects/$
 gcloud projects list --uri
 ```
 
-## service account: treat service account as an identity
+## 0.11. service account 
+* [When granting IAM roles, you can treat a service account either as a resource or as an identity](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts)
 
+### 0.11.1. as an identity
 ```
 export SA_EMAIL=$(gcloud iam service-accounts list \
     --filter="displayName:jenkins" --format='value(email)')
@@ -251,9 +185,8 @@ gcloud projects add-iam-policy-binding $PROJECT --role roles/compute.securityAdm
 gcloud projects add-iam-policy-binding $PROJECT --role roles/iam.serviceAccountActor \
     --member serviceAccount:$SA_EMAIL
 ```
-* [When granting IAM roles, you can treat a service account either as a resource or as an identity](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts)
 
-# service account:treat service account as a resource
+### 0.11.2. service account as a resource
 ```
 gcloud iam service-accounts get-iam-policy <sa_email>, eg. 
 gcloud iam service-accounts get-iam-policy secret-accessor-dev@$PROJECT_ID.iam.gserviceaccount.com --project $PROJECT_ID
@@ -277,14 +210,14 @@ gcloud iam service-accounts add-iam-policy-binding  terraform@${PROJECT_ID}.iam.
 gcloud container clusters list --impersonate-service-account=terraform@${PROJECT_ID}.iam.gserviceaccount.com
 ```
 
-### GCS bucket level
+### 0.11.3. GCS bucket level
 ```
 gsutil iam get gs://${BUCKET_NAME}  -p ${PROJECT_ID}
 COMPUTE_ENGINE_SA_EMAIL=$(gcloud iam service-accounts list --filter="name:Compute Engine default service account" --format "value(email)")
 gsutil iam ch serviceAccount:${COMPUTE_ENGINE_SA_EMAIL}:objectViewer gs://${BUCKET_NAME}
 ```
 
-### Custom Roles
+### 0.11.4. Custom Roles
 ```
 # list predefined roles
 gcloud iam roles list
@@ -297,10 +230,10 @@ gcloud iam roles list --project $PROJECT_ID
 te.instances.list --stage ALPHA
 ```
 
-## app engine
+## 0.12. App engine
 * https://medium.com/google-cloud/app-engine-project-cleanup-9647296e796a
 
-## cloud build 
+## 0.13. Cloud build 
 
 ```
 # user defined
@@ -310,7 +243,7 @@ gcloud builds submit --config=cloudbuild.yaml --substitutions=_BRANCH_NAME=foo,_
 gcloud builds submit --config=cloudbuild.yaml --substitutions=TAG_NAME=v1.0.1
 ```
 
-### Cloud build trigger GCE rolling replace/start
+### 0.13.1. Cloud build trigger GCE rolling replace/start
 * https://medium.com/google-cloud/continuous-delivery-in-google-cloud-platform-cloud-build-with-compute-engine-a95bf4fd1821
 * https://cloud.google.com/compute/docs/instance-groups/updating-managed-instance-groups#performing_a_rolling_replace_or_restart
 
@@ -325,7 +258,7 @@ images:
 
 ```
 
-## kms
+## 0.14. KMS
 * [cloud-encrypt-with-kms](https://codelabs.developers.google.com/codelabs/cloud-encrypt-with-kms/#0)
 * [Integrated with cloud build](https://cloud.google.com/cloud-build/docs/securing-builds/use-encrypted-secrets-credentials)
 
@@ -359,7 +292,7 @@ curl -v "https://cloudkms.googleapis.com/v1/projects/$DEVSHELL_PROJECT_ID/locati
 | jq .plaintext -r | base64 -d    
 ```
 
-## secret manager 
+## 0.15. Secret Manager
 * https://blog.scalesec.com/gcp-secret-manager-first-look-eaa9b0620da1
 
 ```
@@ -375,9 +308,9 @@ gcloud secrets versions access latest --secret=my_ssh_private_key
 gcloud secrets update SECRET_NAME --update-labels=KEY=VALUE
 ```
 
-## compute engine
+## 0.16. Compute Engine
 
-### gcloud command for creating an instance? 
+### 0.16.1. gcloud command for creating an instance? 
 from web console
 ```
 gcloud compute instances create [INSTANCE_NAME] \
@@ -388,7 +321,7 @@ gcloud compute instances create [INSTANCE_NAME] \
 gcloud compute instances create micro1 --zone=us-west1-a --machine-type=f1-micro --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=398028291895-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --min-cpu-platform=Automatic --image=debian-9-stretch-v20180510 --image-project=debian-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --boot-disk-device-name=micro1
 ```
 
-### list compute images
+### 0.16.2. list compute images
 ```
 gcloud compute images list --filter=name:debian --uri
 https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-8-jessie-v20180109
@@ -400,7 +333,7 @@ gcloud compute images list --project windows-cloud --no-standard-images
 gcloud compute images list --project gce-uefi-images --no-standard-images
 ```
 
-### list an instance 
+### 0.16.3. list an instance 
 * [filters](https://cloud.google.com/sdk/gcloud/reference/topic/filters)
 * [resource-keys](https://cloud.google.com/sdk/gcloud/reference/topic/resource-keys)
 
@@ -412,10 +345,10 @@ gcloud compute instances list --filter=tags:kafka-node
 gcloud compute instances list --filter='machineType:g1-small'
 ```
 
-### move instance
+### 0.16.4. move instance
 `gcloud compute instances move <instance_wanna_move> --destination-zone=us-central1-a --zone=us-central1-c`
 
-### ssh & scp
+### 0.16.5. ssh & scp
 ```
 #--verbosity=debug is great for debugging, showing the SSH command 
 # the following is a real word example for running a bastion server that talks to a GKE cluster (master authorized network)
@@ -424,7 +357,7 @@ gcloud compute ssh --verbosity=debug <instance_name> --command "kubectl get node
 gcloud compute scp  --recurse ../manifest <instance_name>:
 ```
 
-### SSH via IAP
+### 0.16.6. SSH via IAP
 * https://cloud.google.com/iap/docs/using-tcp-forwarding
 
 ```
@@ -435,28 +368,28 @@ gcloud compute instances delete-access-config  oregon1 --access-config-name "Ext
 # connect via IAP, assuming the IAP is granted to the account used for login. 
 gcloud beta compute ssh oregon1 --tunnel-through-iap
 ```
-### ssh port forwarding for elasticsearch
+### 0.16.7. ssh port forwarding for elasticsearch
 ```
 gcloud compute --project "foo" ssh --zone "us-central1-c" "elasticsearch-1"  --ssh-flag="-L localhost:9200:localhost:9200"
 ```
 The 2nd `localhost` is relative to  elasticsearch-1`
 
-### ssh reverse port forwarding 
+### 0.16.8. ssh reverse port forwarding 
 for example, how to connect to home server's flask server (tcp port 5000) for a demo or a local game server in development
 ```
 GOOGLE_CLOUD_PROJECT=$(gcloud config get-value project)
 gcloud compute --project "${GOOGLE_CLOUD_PROJECT}" ssh --zone "us-west1-c" --ssh-flag="-v -N -R :5000:localhost:5000" "google_cloud_bastion_server"
 ```
 
-### generate ssh config 
+### 0.16.9. generate ssh config 
 ```
 gcloud compute config-ssh
 ```
 
-### Windows RDP reset windows password
+### 0.16.10. Windows RDP reset windows password
 returns the IP and password for creating the RDP connection. 
 ```
-gcloud compute reset-windows-password qa-iceberg-instance --user=jdoe
+gcloud compute reset-windows-password instance --user=jdoe
 
 ip_address: 104.199.119.166
 password:   Ks(;_gx7Bf2d.NP
@@ -465,24 +398,24 @@ username:   jode
 
 
 
-### debugging
-gcloud debugging: `gcloud  compute instances list --log-http`
-[serial port debug](https://cloud.google.com/compute/docs/instances/interacting-with-serial-console)
+### 0.16.11. debugging
+* `gcloud  compute instances list --log-http`
+* [serial port debug](https://cloud.google.com/compute/docs/instances/interacting-with-serial-console)
 
 
-### instance level metadata
+### 0.16.12. instance level metadata
 ```
 curl -s "http://metadata.google.internal/computeMetadata/v1/instance/?recursive=true&alt=text" -H "Metadata-Flavor: Google"
 leader=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/leader" -H "Metadata-Flavor: Google")
 ```
 
-### project level metadata
+### 0.16.13. project level metadata
 ```
 gcloud compute project-info describe
 gcloud compute project-info describe --flatten="commonInstanceMetadata[]"
 ```
 
-### instances, template, target-pool and instance group
+### 0.16.14. instances, template, target-pool and instance group
 ```
 cat << EOF > startup.sh
 #! /bin/bash
@@ -501,7 +434,7 @@ gcloud compute instance-groups managed create nginx-group \
          --target-pool nginx-pool
 ```
 
-### MIG with startup and shutdown scripts
+### 0.16.15. MIG with startup and shutdown scripts
 https://cloud.google.com/vpc/docs/special-configurations#multiple-natgateways
 
 ```
@@ -515,22 +448,22 @@ gcloud compute instance-templates create nat-2 \
     --machine-type n1-standard-2 --can-ip-forward --tags natgw \
     --metadata-from-file=startup-script=startup.sh  --address $nat_2_ip
 ```
-### disk snapshot
+### 0.16.16. disk snapshot
 ```
 gcloud compute disks snapshot kafka-data1-1 --async --snapshot-names=kafka-data-1 --project project_a --zone us-west1-a
 Use [gcloud compute operations describe URI] command to check the status of the operation(s).
 ```
 
-### regional disk
+### 0.16.17. regional disk
 ```
  gcloud beta compute instance attach-disk micro1 --disk pd-west1 --disk-scope regional
 ```
 
 
 
-## Networking
+## 0.17. Networking
 
-### network and subnets
+### 0.17.1. network and subnets
 ```
  gcloud compute networks create privatenet --subnet-mode=custom
  gcloud compute networks subnets create privatesubnet-us --network=privatenet --region=us-central1 --range=172.16.0.0/24
@@ -538,7 +471,7 @@ Use [gcloud compute operations describe URI] command to check the status of the 
  gcloud compute networks subnets list --sort-by=NETWORK
 ```
 
-### route
+### 0.17.2. route
 tag the instances with `no-ips`
 
 ```
@@ -550,7 +483,7 @@ gcloud compute routes create no-ip-internet-route \
     --next-hop-instance-zone us-central1-a \
     --tags no-ip --priority 800
 ```
-### firewall rules
+### 0.17.3. firewall rules
 * https://medium.com/@swongra/protect-your-google-cloud-instances-with-firewall-rules-69cce960fba
 
 ```
@@ -574,7 +507,7 @@ gcloud compute firewall-rules list --sort-by=NETWORK
 
 ```
 
-### layer 4 network lb
+### 0.17.4. layer 4 network lb
 ```
 gcloud compute firewall-rules create www-firewall --allow tcp:80
 gcloud compute forwarding-rules create nginx-lb \
@@ -586,7 +519,7 @@ gcloud compute firewall-rules list --sort-by=NETWORK
 
 ```
 
-### layer 7 http lb
+### 0.17.5. layer 7 http lb
 * https://cloud.google.com/solutions/scalable-and-resilient-apps
 
 ```
@@ -617,14 +550,14 @@ gcloud compute forwarding-rules list
 
 ```
 
-### forwarding-rules
+### 0.17.6. forwarding-rules
 ```
 gcloud compute forwarding-rules list --filter=$(dig +short <dns_name>)
 gcloud compute forwarding-rules describe my-forwardingrule --region us-central1
 gcloud compute forwarding-rules describe my-http-forwardingrule --global
 ```
 
-### address
+### 0.17.7. address
 ```
 # get the external IP address of the instance
 gcloud compute instances describe single-node \
@@ -636,14 +569,14 @@ gcloud compute addresses describe https-lb --global --format json
 gcloud projects list --format='value(project_id)' | xargs -I {} gcloud compute addresses list --format='value(address)' --project {}  2>/dev/null | sort | uniq -c
 ```
 
-## interconnect 
+## 0.18. interconnect 
 
 ```
 # list Google Compute Engine interconnect locations
 gcloud compute interconnects locations list
 ```
 
-## GCP managed ssl certificate
+## 0.19. GCP managed ssl certificate
 ```
 gcloud beta compute ssl-certificates create example-mydomain --domains example.mydomain.com
 gcloud beta compute ssl-certificates list
@@ -653,18 +586,18 @@ gcloud beta compute target-https-proxies list
 ```
 
 
-## StackDriver logging
+## 0.20. StackDriver logging
 ```
 gcloud logging read "timestamp >= \"2018-04-19T00:30:00Z\"  and logName=projects/${project_id}/logs/requests and resource.type=http_load_balancer" --format="csv(httpRequest.remoteIp,httpRequest.requestUrl,timestamp)" --project=${project_id}
 ```
 
-## Service
+## 0.21. Service
 
-### list service available
+### 0.21.1. list service available
 
 `gcloud services list --available`
 
-### Enable Service 
+### 0.21.2. Enable Service 
 
 ```
 # chain 
@@ -700,11 +633,11 @@ function enable-service() {
 enable-service container.googleapis.com
 ```
 
-## Client libraries you can use to connect to Google APIs
+## 0.22. Client libraries you can use to connect to Google APIs
 * https://medium.com/google-cloud/simple-google-api-auth-samples-for-service-accounts-installed-application-and-appengine-da30ee4648
 
 
-## chaining gcloud commands
+## 0.23. chaining gcloud commands
 ```
 gcloud compute forwarding-rules list --format 'value(NAME)' \
 | xargs -I {}  gcloud compute forwarding-rules delete {}  --region us-west1 -q
@@ -722,7 +655,7 @@ gcloud compute routes list --filter="NOT network=default" --format='value(NAME)'
 | xargs -I {} gcloud compute routes delete -q {}
 ```
 
-## one liner to purge GCR images given a date
+## 0.24. one liner to purge GCR images given a date
 ```
 DATE=2018-10-01
 IMAGE=<project_id>/<image_name>
@@ -730,7 +663,7 @@ gcloud container images list-tags gcr.io/$IMAGE --limit=unlimited --sort-by=TIME
 --filter="NOT tags:* AND timestamp.datetime < '${DATE}'" --format='get(digest)' | \
 while read digest;do gcloud container images delete -q --force-delete-tags gcr.io/$IMAGE@$digest ;done
 ```
-## GKE
+## 0.25. GKE
 ```
 # create a private cluster
 gcloud beta container clusters create private-cluster \
@@ -789,7 +722,7 @@ gcloud container clusters describe mycluster --format='get(endpoint)'
 gcloud container clusters get-credentials private-cluster --zone us-central1-a --internal-ip
 ```
 
-### create a GKE cluster with label and query it later
+### 0.25.1. create a GKE cluster with label and query it later
 
 ```
 gcloud container clusters create example-cluster --labels env=dev
@@ -797,7 +730,7 @@ gcloud container clusters list --filter resourceLabels.env=dev
 ```
 
 
-## Cloud Run
+## 0.26. Cloud Run
 ```
 # deploy a service on Cloud Run in us-central1 and allow unauthenticated user
 gcloud beta run deploy --image gcr.io/${PROJECT-ID}/helloworld --platform managed --region us-central1 --allow-unauthenticated
@@ -809,12 +742,12 @@ gcloud beta run services describe <service_name> --format="get(status.url)"
 ```
 
 
-## Machine Learning
+## 0.27. Machine Learning
 ```
 brew install bat
 gcloud ml language analyze-entities --content="Michelangelo Caravaggio, Italian painter, is known for 'The Calling of Saint Matthew'." | bat  -l json
 ```
 
-## Deployment Manager
+## 0.28. Deployment Manager
 * https://cloud.google.com/sdk/gcloud/reference/deployment-manager/deployments/
 Play with the commands for preview and cancel-preview. 
