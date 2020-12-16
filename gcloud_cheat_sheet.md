@@ -65,7 +65,6 @@ Table of Contents
   * [0\.28\. Machine Learning](#028-machine-learning)
   * [0\.29\. Deployment Manager](#029-deployment-manager)
 
-Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc.go)
 # 0.1. References
 * [have fun with them](https://cloudplatform.googleblog.com/2016/06/filtering-and-formatting-fun-with.html)
 * [projections](https://cloud.google.com/sdk/gcloud/reference/topic/projections)
@@ -205,8 +204,10 @@ gcloud beta billing accounts list
 gcloud beta billing projects link ${project_id} \
             --billing-account ${ORGANIZATION_BILLING_ACCOUNT}
 ```
+## 0.10. IAM
 
-## 0.10. iam
+* https://github.com/darkbitio/gcp-iam-role-permissions
+
 ```
 
 gcloud iam roles describe roles/container.admin
@@ -268,6 +269,36 @@ gcloud projects add-iam-policy-binding ${PROJECT} \
 ```
 
 ### 0.11.2. service account as a resource
+* https://cloud.google.com/iam/docs/creating-short-lived-service-account-credentials
+* https://medium.com/@tanujbolisetty/gcp-impersonate-service-accounts-36eaa247f87c
+* https://medium.com/wescale/how-to-generate-and-use-temporary-credentials-on-google-cloud-platform-b425ef95a00d
+* https://cloud.google.com/iam/credentials/reference/rest/v1/projects.serviceAccounts/generateAccessToken shows the lifetime of the OAuth token of 3600 seconds by default
+
+```
+# ansible impersonate as a svc account terraform@${PROJECT_ID}.iam.gserviceaccount.com
+# ${SA_PROJECT_ID} is the global project storing all the service accounts
+TF_SA_EMAIL=terraform@${SA_PROJECT_ID}.iam.gserviceaccount.com
+ANSIBLE_SA_EMAIL="ansible@${SA_PROJECT_ID}.iam.gserviceaccount.com"
+gcloud iam service-accounts add-iam-policy-binding ${TF_SA_EMAIL} \
+    --project ${SA_PROJECT_ID} \
+    --member "serviceAccount:$ANSIBLE_SA_EMAIL" \
+    --role roles/iam.serviceAccountTokenCreator
+# create a gcp project $A_PROJECT_ID under $A_FOLDER_ID
+gcloud projects --impersonate-service-account=$TF_SA_EMAIL create $A_PROJECT_ID --name=$A_PROJECT_NAME --folder=$A_FOLDER_ID
+```
+
+
+```
+# user:godevopsrocks@gmail.com impersonate as a svc account terraform@${PROJECT_ID}.iam.gserviceaccount.com
+TF_SA_EMAIL=terraform@your-service-account-project.iam.gserviceaccount.com
+gcloud iam service-accounts add-iam-policy-binding  $TF_SA_EMAIL --member=user:godevopsrocks@gmail.com \
+--role roles/iam.serviceAccountTokenCreator
+
+gcloud container clusters list --impersonate-service-account=terraform@${PROJECT_ID}.iam.gserviceaccount.com
+```
+
+
+
 ```
 gcloud iam service-accounts get-iam-policy <sa_email>, eg. 
 gcloud iam service-accounts get-iam-policy secret-accessor-dev@$PROJECT_ID.iam.gserviceaccount.com --project $PROJECT_ID
@@ -278,17 +309,7 @@ bindings:
 etag: BwWhFqqv9aQ=
 version: 1
 
-gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews-154908.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
-```
-* https://cloud.google.com/iam/docs/creating-short-lived-service-account-credentials
-* https://medium.com/@tanujbolisetty/gcp-impersonate-service-accounts-36eaa247f87c
-* https://medium.com/wescale/how-to-generate-and-use-temporary-credentials-on-google-cloud-platform-b425ef95a00d
-* https://cloud.google.com/iam/credentials/reference/rest/v1/projects.serviceAccounts/generateAccessToken shows the lifetime of the OAuth token of 3600 seconds by default
-
-```
-# user:godevopsrocks@gmail.com impersonate as a svc account terraform@${PROJECT_ID}.iam.gserviceaccount.com
-gcloud iam service-accounts add-iam-policy-binding  terraform@${PROJECT_ID}.iam.gserviceaccount.com --member=user:godevopsrocks@gmail.com --role roles/iam.serviceAccountTokenCreator
-gcloud container clusters list --impersonate-service-account=terraform@${PROJECT_ID}.iam.gserviceaccount.com
+gcloud iam service-accounts add-iam-policy-binding infrastructure@retviews.iam.gserviceaccount.com --member='serviceAccount:infrastructure@retviews-154908.iam.gserviceaccount.com' --role='roles/iam.serviceAccountActor'
 ```
 
 ### 0.11.3. GCS bucket level
@@ -857,6 +878,18 @@ gcloud beta run deploy --image gcr.io/${PROJECT-ID}/helloworld --platform manage
 gcloud beta run services list
 # get endpoint url for a service
 gcloud beta run services describe <service_name> --format="get(status.url)"
+
+export SERVICE_URL="$(gcloud run services list --platform managed --filter=${SERVICE_NAME} --format='value(URL)')"
+
+# Give service account permission to invoke the Cloud Run service
+export SERVICE_ACCOUNT=cloudrun-scheduler-sa
+gcloud iam service-accounts create ${SERVICE_ACCOUNT} \
+   --display-name "Cloud Run Scheduler Service Account"
+gcloud run services add-iam-policy-binding event-display-scheduled \
+   --member=serviceAccount:${SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com \
+   --role=roles/run.invoker
+
+
 ```
 
 
