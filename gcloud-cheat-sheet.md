@@ -45,6 +45,7 @@
       * [0.17.6. forwarding-rules](#0176-forwarding-rules)
       * [0.17.7. address](#0177-address)
       * [0.17.8. private service access](#0178-private-service-access)
+      * [0.17.9. shared vpc](#0179-shared-vpc)
    * [0.18. interconnect](#018-interconnect)
    * [0.19. GCP managed ssl certificates](#019-gcp-managed-ssl-certificates)
    * [0.20. Cloud logging](#020-cloud-logging)
@@ -157,6 +158,15 @@ export PROJECT=$(gcloud info --format='value(config.project)')
 ## 0.6. projects
 
 ```bash
+
+# create a project
+gcloud projects create ${PROJECT_ID} --organization=${ORGANIZATION_ID} --folder=${FOLDER_ID}
+# link the project with a given billing account
+gcloud beta billing projects link ${PROJECT_ID} --billing-account ${BILLING_ACCOUNT_ID}
+
+# delete a project
+gcloud projects delete --quiet ${PROJECT_ID}
+
 # various way to get project_id
 PROJECT_ID=$(gcloud config get-value core/project 2>/dev/null)
 PROJECT_ID=$(gcloud config list project --format='value(core.project)')
@@ -732,6 +742,23 @@ gcloud projects list --format='value(project_id)' | xargs -I {} gcloud compute a
 Useful for services like Cloud SQL and Redis, peering between a custom VPC to a managed VPC by google.
 ```bash
 gcloud services vpc-peerings list --network=my-vpc
+```
+
+### 0.17.9. shared vpc
+
+```bash
+# Enable shared-vpc in '${NETWORK_PROJECT_ID}'
+gcloud services enable --project ${NETWORK_PROJECT_ID} compute.googleapis.com
+gcloud compute shared-vpc enable ${NETWORK_PROJECT_ID}
+
+# Associate a service project with '${NETWORK_PROJECT_ID}'
+gcloud services enable --project ${PLATFORM_PROJECT_ID} compute.googleapis.com
+gcloud compute firewall-rules delete --project ${PLATFORM_PROJECT_ID} --quiet default-allow-icmp default-allow-internal default-allow-rdp default-allow-ssh
+gcloud compute networks delete --project ${PLATFORM_PROJECT_ID} --quiet default
+gcloud compute shared-vpc associated-projects add ${PLATFORM_PROJECT_ID} --host-project ${NETWORK_PROJECT_ID}
+
+## Disassociate a service project from host project.
+gcloud compute shared-vpc associated-projects remove ${PLATFORM_PROJECT_ID} --host-project ${NETWORK_PROJECT_ID}
 ```
 
 ## 0.18. interconnect
